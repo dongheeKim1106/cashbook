@@ -28,6 +28,7 @@
 			if($('#memberId').val().length < 4) {
 				// 함수 호출
 				helperInit();
+				// idHelper라는 id를 가진 태그에 text출력
 				$('#idHelper').text("ID는 4자 이상");
 				// 커서가 memberId라는 id를 가진 text창으로 이동
 				$('#memberId').focus();
@@ -63,42 +64,85 @@
 </script>
 </head>
 <body>
-	<div class="container">
-		<div align="center">
-			<h1 class="m-5">회원가입</h1>
-			<form id="myForm" method="post" action="/addMember">
-				<div>
-					아이디 : <input type="text" name="memberId" id="memberId">
-					<!-- 메세지가 뜰 위치 -->
-					<span id="idHelper"></span>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-5"></div>
+			<div class="col-sm-2">
+				<div align="center">
+					<h1 class="m-5"><strong>회원가입</strong></h1>
+					<!-- addMember에 Post방식으로 값을 넘기는 폼 -->
+					<form id="myForm" method="post" action="/addMember">
+						<div class="form-group">
+							<div align="left">
+								<label>아이디</label>
+							</div>
+							<div>
+								<input type="text" name="memberId" id="memberId" class="form-control" placeholder="ID 입력">
+								<!-- 메세지가 뜰 위치 -->
+								<span id="idHelper"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div align="left">
+								<label>비밀번호</label>
+							</div>
+							<div>  
+								<input type="password" name="memberPw" id="memberPw" class="form-control" placeholder="PW 입력">
+								<span id="pwHelper"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div align="left">
+								<label>비밀번호 확인</label>
+							</div>
+							<div>
+								<input type="password" id="memberPw2" class="form-control" placeholder="PW 확인">
+							</div>
+						</div>
+						<div class="form-group">
+							<div align="left">
+								<label>사용자 이름</label>
+							</div>
+							<div>
+								<input type="text" name="memberName" id="memberName" class="form-control" placeholder="이름 입력">
+								<span id="nameHelper"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div align="left">
+								<label>주소</label>
+							</div>
+							<div>
+								<input type="text" name="memberAddr" id="memberAddr" class="form-control" placeholder="주소 입력">
+								<span id="addrHelper"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div align="left">
+								<label>전화번호</label>
+							</div>
+							<div>
+								<input type="text" name="memberPhone" id="memberPhone" class="form-control" placeholder="전화번호 입력">
+								<span id="phoneHelper"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<div align="left">
+								<label for="email">이메일</label>
+							</div>
+							<div>
+								<input type="text" name="memberEmail" id="memberEmail" class="form-control" placeholder="Email 입력">
+								<span id="emailHelper"></span>
+							</div>
+						</div>
+						<br>
+						<div>
+							<button type="button" id="btn" class="btn btn-primary btn-block">회원가입</button>
+						</div>
+					</form>
 				</div>
-				<div>
-					비밀번호 : <input type="password" name="memberPw" id="memberPw">
-					<span id="pwHelper"></span>
-				</div>
-				<div>
-					비밀번호확인 : <input type="password" id="memberPw2">
-				</div>
-				<div>
-					사용자 이름 : <input type="text" name="memberName" id="memberName">
-					<span id="nameHelper"></span>
-				</div>
-				<div>
-					주소 : <input type="text" name="memberAddr" id="memberAddr">
-					<span id="addrHelper"></span>
-				</div>
-				<div>
-					전화번호 : <input type="text" name="memberPhone" id="memberPhone">
-					<span id="phoneHelper"></span>
-				</div>
-				<div>
-					이메일 : <input type="text" name="memberEmail" id="memberEmail">
-					<span id="emailHelper"></span>
-				</div>
-				<div>
-					<button type="button" id="btn">회원가입</button>
-				</div>
-			</form>
+			</div>
+			<div class="col-sm-5"></div>
 		</div>
 	</div>
 </body>
