@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>findMember</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script>
+	$(document).ready(function() {
+		// 찾기 버튼 클릭시 이벤트
+		$('#btn').click(function() {
+			// 전화번호 입력을 안할시
+			if($('#memberPhone').val().length < 1) {
+				alert("전화번호를 입력하세요");
+				return;
+			}
+			$('#findForm').submit();
+		});
+	});
+</script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-5"></div>
+			<div class="col-sm-2">
+				<div align="center">
+					<h3 class="m-5"><strong>아이디</strong></h3>
+					<h3 class="m-5"><strong>비밀번호 찾기</strong></h3>
+					<div th:if="${member == null}">
+						<form id="findForm" method="post" action="/findMember">
+							<div class="form-group">
+								<div align="left">
+									<label>회원 전화번호</label>
+								</div>
+								<div>
+									<input type="text" name="memberPhone" id="memberPhone" class="form-control" placeholder="전화번호">
+								</div>
+							</div>
+							<br>
+							<div>
+								<button id="btn" type="button" class="btn btn-primary btn-block">찾기</button>
+							</div>
+						</form>
+					</div>
+					<div th:if="${member != null}">
+						<div>
+							ID :<span th:text="${member.memberId}"></span>
+							PW :<span th:text="${member.memberPw}"></span>
+						</div>
+					</div>
+					<div th:if="${member == null}">
+						<span th:text="${msg}"></span>
+					</div>
+					<br>
+					<div>
+						<a href="/login" class="btn btn-primary btn-block">로그인</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-5"></div>
+		</div>
+	</div>
+</body>
+</html>
