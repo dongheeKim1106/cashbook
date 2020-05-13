@@ -17,9 +17,16 @@
 	<div align="center">
 		<h1 class="m-5">가계부</h1>
 		<br><br>
-		<a href="/" type="button" class="btn btn-primary col-sm-4">로그인</a>
-		<br><br><br>
 		<a href="/addMember" type="button" class="btn btn-primary col-sm-4">회원가입</a>
+		<br><br><br>
+		<!-- session이 null 이 아니면 로그인이 되어 있기 때문에 로그아웃 -->
+		<div th:if="${session.loginMember != null}">
+			<a href="/logout" type="button" class="btn btn-primary col-sm-4">로그아웃</a>
+		</div>
+		<!-- session이 null 이면 로그인이 안되있기 때문에 로그인 -->
+		<div th:if="${session.loginMember == null}">
+			<a href="/login" type="button" class="btn btn-primary col-sm-4">로그인</a>
+		</div>
 		<br><br><br><br><br>
 		<div>본 콘텐츠의 저작권은 제공처에 있으며, 이를 무단 이용하는 경우 저작권법 등에 따라 법적 책임을 질 수 있습니다.</div>
 		<div><strong>Copyright © JWsoft Corp. All Rights Reserved.</strong></div>

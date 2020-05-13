@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>login</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script>
+	//span 태그 초기화 함수
+	let helperInit = function() {
+		$('#idHelper').text("");
+		$('#pwHelper').text("");
+	};
+	
+	$(document).ready(function(){
+		$('#btn').click(function(){
+			// 유효성 검사 코드
+			if($('#memberId').val().length < 1) {
+				// 함수 호출
+				helperInit();
+				$('#idHelper').text("아이디를 입력하세요");
+				$('#memberId').focus();
+				return;
+			}
+			if($('#memberPw').val().length < 1) {
+				// 함수 호출
+				helperInit();
+				$('#pwHelper').text("비밀번호를 입력하세요");
+				$('#memberPw').focus();
+				return;
+			}
+			$('#loginForm').submit();
+		});
+	});
+</script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-5"></div>
+			<div class="col-sm-2">
+				<div align="center">
+						<h1 class="m-5"><strong>로그인</strong></h1>
+						<form id="loginForm" method="post" action="/login">
+							<div class="form-group">
+								<div>
+									<label></label>
+								</div>
+								<div>
+									<input type="text" id="memberId" name="memberId" class="form-control" placeholder="아이디">
+									<span id="idHelper"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<div>
+									<label></label>
+								</div>
+								<div>
+									<input type="password" id="memberPw" name="memberPw" class="form-control" placeholder="비밀번호">
+									<span id="pwHelper"></span>
+								</div>
+							</div>
+							<br><br>
+							<div>
+								<button type="button" id="btn" class="btn btn-primary btn-block">로그인</button>
+							</div>
+						</form>
+						<br>
+						<div>
+							<a href="/addMember" type="button" class="btn btn-primary btn-block">회원가입</a>
+						</div>
+					</div>
+				</div>
+			<div class="col-sm-5"></div>
+		</div>
+	</div>
+</body>
+</html>
