@@ -7,9 +7,10 @@ import com.gdu.cashbook1.vo.Member;
 
 @Mapper
 public interface MemberMapper {
-	
+	// 회원정보 수정
+	public int updateMember(Member member);
 	// 회원 탈퇴
-	public int deleteMember(String memberPw);
+	public int deleteMember(LoginMember loginMember);
 	// 회원탈퇴 가능 유무
 	public String selectMemberPw(String memberPw);
 	// 회원정보 하나씩 보기

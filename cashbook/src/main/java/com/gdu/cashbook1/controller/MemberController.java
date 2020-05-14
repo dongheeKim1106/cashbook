@@ -19,6 +19,30 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	// 수정폼 요청
+	@GetMapping("/modifyMember")
+	public String modifyMember(Model model, HttpSession session) {
+		// 로그인중이 아닐때
+		if(session.getAttribute("loginMember") == null) {
+			return "redirect:/";
+		}
+		// 로그인된 memberId값 형 변환
+		Member member = memberService.getMemberOne((LoginMember)(session.getAttribute("loginMember")));
+		System.out.println(member);
+		model.addAttribute("member", member);
+		return "modifyMember";
+	}
+	// 수정 액션
+	@PostMapping("/modifyMember")
+	public String modifyMember(HttpSession session, Member member) {
+		// 로그인중이 아닐때
+		if(session.getAttribute("loginMember") == null) {
+			return "redirect:/";
+		}
+		System.out.println(member);
+		memberService.modifyMember(member);
+		return "redirect:/memberInfo";
+	}
 	// 비밀번호 입력 화면 요청(회원탈퇴)
 	@GetMapping("/removeMember")
 	public String removeMember(HttpSession session) {
@@ -28,29 +52,19 @@ public class MemberController {
 		}
 		return "removeMember";
 	}
-	// 회원탈퇴 가능 여부 확인 및 탈퇴
+	// 회원탈퇴 액션
 	@PostMapping("/removeMember")
-	public String remobeMember(Model model, HttpSession session, @RequestParam("memberPw") String memberPw) {
+	public String remobeMember(HttpSession session, @RequestParam("memberPw") String memberPw) {
 		// 로그인중이 아닐때
 		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
-		System.out.println(memberPw);
-		String confirmMemberId = memberService.checkMemberPw(memberPw);
-		System.out.println(confirmMemberId);
-		if(confirmMemberId == null) {
-			// 비밀번호가 DB에 없으면
-			System.out.println("탈퇴 불가능");
-			model.addAttribute("msg", "비밀번호가 맞지 않습니다");
-			return "removeMember";
-		} else {
-			// 비밀번호가 있으면
-			System.out.println("탈퇴 가능");
-			// session 초기화
-			session.invalidate();
-			memberService.removeMember(memberPw);
-			return "index";
-		}
+		LoginMember loginMember = (LoginMember)(session.getAttribute("loginMember"));
+		loginMember.setMemberPw(memberPw);
+		memberService.removeMember(loginMember);
+		// 세션 초기화
+		session.invalidate();
+		return "redirect:/";
 	}
 	// 회원정보 하나 보여주기
 	@GetMapping("/memberInfo")
