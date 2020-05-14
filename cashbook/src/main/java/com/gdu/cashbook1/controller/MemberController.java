@@ -18,6 +18,53 @@ public class MemberController {
 	// 의존객체 자동 주입
 	@Autowired
 	private MemberService memberService;
+	
+	// 비밀번호 입력 화면 요청(회원탈퇴)
+	@GetMapping("/removeMember")
+	public String removeMember(HttpSession session) {
+		// 로그인중이 아닐때
+		if(session.getAttribute("loginMember") == null) {
+			return "redirect:/";
+		}
+		return "removeMember";
+	}
+	// 회원탈퇴 가능 여부 확인 및 탈퇴
+	@PostMapping("/removeMember")
+	public String remobeMember(Model model, HttpSession session, @RequestParam("memberPw") String memberPw) {
+		// 로그인중이 아닐때
+		if(session.getAttribute("loginMember") == null) {
+			return "redirect:/";
+		}
+		System.out.println(memberPw);
+		String confirmMemberId = memberService.checkMemberPw(memberPw);
+		System.out.println(confirmMemberId);
+		if(confirmMemberId == null) {
+			// 비밀번호가 DB에 없으면
+			System.out.println("탈퇴 불가능");
+			model.addAttribute("msg", "비밀번호가 맞지 않습니다");
+			return "removeMember";
+		} else {
+			// 비밀번호가 있으면
+			System.out.println("탈퇴 가능");
+			// session 초기화
+			session.invalidate();
+			memberService.removeMember(memberPw);
+			return "index";
+		}
+	}
+	// 회원정보 하나 보여주기
+	@GetMapping("/memberInfo")
+	public String memberInfo(Model model, HttpSession session) {
+		// 로그인중이 아닐때
+		if(session.getAttribute("loginMember") == null) {
+			return "redirect:/";
+		}
+		// 형변환
+		Member member = memberService.getMemberOne((LoginMember)(session.getAttribute("loginMember")));
+		System.out.println(member);
+		model.addAttribute("member", member);
+		return "memberInfo";
+	}
 	// 아이디 찾기
 	@GetMapping("/findMember")
 	public String findMember(HttpSession session) {
@@ -67,7 +114,7 @@ public class MemberController {
 		} else {
 			// 값이 있으면 중복된 아이디
 			System.out.println("아이디 사용 불가");
-			model.addAttribute("msg", "사용중인 아이디 입니다.");
+			model.addAttribute("msg", "사용할수 없는 아이디 입니다.");
 		}
 		return "addMember";
 	}
@@ -101,7 +148,7 @@ public class MemberController {
 			return "login";
 		} else { // login 성공
 			session.setAttribute("loginMember", returnLoginMember);
-			return "redirect:/index";
+			return "redirect:/home";
 		}
 	}
 	// 로그아웃

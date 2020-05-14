@@ -14,6 +14,18 @@ public class MemberService {
 	// 의존객체 자동주입
 	@Autowired
 	private MemberMapper memberMapper;
+	// 회원 탈퇴
+	public int removeMember(String memberPw) {
+		return memberMapper.deleteMember(memberPw);
+	}
+	// 회원탈퇴 가능 여부
+	public String checkMemberPw(String memberPw) {
+		return memberMapper.selectMemberPw(memberPw);
+	}
+	// 회원정보 하나만 보여주기
+	public Member getMemberOne(LoginMember loginMember) {
+		return memberMapper.selectMemberOne(loginMember);
+	}
 	// 아이디 비밀번호 보여주기
 	public Member getMemberIdPw(String memberPhone) {
 		return memberMapper.selectMemberIdPw(memberPhone);

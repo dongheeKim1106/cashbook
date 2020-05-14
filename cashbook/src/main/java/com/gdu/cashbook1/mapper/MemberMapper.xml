@@ -3,7 +3,30 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gdu.cashbook1.mapper.MemberMapper">
-
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="deleteMember" parameterType="String">
+		DELETE FROM member
+		WHERE member_pw = PASSWORD(#{memberPw})
+	</delete>
+	<!-- 회원탈퇴 가능 여부 -->
+	<select id="selectMemberPw" parameterType="String" resultType="String">
+		SELECT
+			member_pw as memberPw
+		FROM member
+		WHERE member_pw = PASSWORD(#{memberPw})
+	</select>
+	<!-- 회원정보 하나만 보여주는 쿼리 -->
+	<select id="selectMemberOne" parameterType="com.gdu.cashbook1.vo.LoginMember" resultType="com.gdu.cashbook1.vo.Member">
+		SELECT
+			member_id as memberId,
+			member_name as memberName,
+			member_addr as memberAddr,
+			member_phone as memberPhone,
+			member_email as memberEmail
+		FROM member
+		WHERE member_id = #{memberId}
+	</select>
 	<!-- 아이디 비밀번호 보여주는 쿼리 -->
 	<select id="selectMemberIdPw" parameterType="String" resultType="com.gdu.cashbook1.vo.Member">
 		SELECT
@@ -23,7 +46,9 @@
 	<select id="selectMemberId" parameterType="String" resultType="String">
 		SELECT
 			member_id
-		FROM member
+		FROM (	SELECT member_id FROM member
+				UNION
+				SELECT member_id FROM memberid) t
 		WHERE member_id = #{memberIdCheck}
 	</select>
 	<!-- login 쿼리 -->
@@ -33,9 +58,10 @@
 			member_pw as memberPw
 		FROM member
 		WHERE member_id = #{memberId}
-		AND member_pw = #{memberPw}
+		AND member_pw = PASSWORD(#{memberPw})
 	</select>
 	<!-- member 데이터 추가 쿼리 -->
+	<!-- PASSWORD함수는 비밀번호 암호화 -->
 	<insert id="insertMember" parameterType="com.gdu.cashbook1.vo.Member">
 		INSERT INTO member(
 			member_id, 
@@ -46,7 +72,7 @@
 			member_email
 		) VALUES (
 			#{memberId}, 
-			#{memberPw}, 
+			PASSWORD(#{memberPw}), 
 			#{memberName}, 
 			#{memberAddr}, 
 			#{memberPhone}, 

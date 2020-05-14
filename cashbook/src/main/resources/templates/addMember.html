@@ -17,9 +17,10 @@
 		$('#idHelper').text("");
 		$('#pwHelper').text("");
 		$('#nameHelper').text("");
-		$('addrHelper').text("");
+		$('#addrHelper').text("");
 		$('#phoneHelper').text("");
 		$('#emailHelper').text("");
+		$('#memberIdCheckHelper').text("");
 	};
 
 	$(document).ready(function() {
@@ -47,7 +48,7 @@
 				$('#memberName').focus();
 			} else if($('#memberAddr').val().length < 1) {
 				helperInit();
-				$('addrHelper').text("주소를 입력 하세요");
+				$('#addrHelper').text("주소를 입력 하세요");
 				$('#memberAddr').focus();
 			} else if($('#memberPhone').val().length < 1) {
 				helperInit();
@@ -63,6 +64,13 @@
 		});
 		// 중복체크 버튼 누를때 이벤트
 		$('#idBtn').click(function() {
+			helperInit();
+			// 4자 이하 일때
+			if($('#memberIdCheck').val().length < 4) {
+				$('#memberIdCheckHelper').text("ID를 4이상 입력하세요");
+				$('#memberIdCheck').focus();
+				return;
+			}
 			$('#idForm').submit();
 		});
 	});
@@ -79,7 +87,8 @@
 						<div class="form-group">
 							<div align="left">
 								아이디 중복확인
-								<input type="text" name="memberIdCheck" id="memberIdCeck" class="form-control" placeholder="ID 입력" th:value="${memberIdCheck}">
+								<input type="text" name="memberIdCheck" id="memberIdCheck" class="form-control" placeholder="ID 입력" th:value="${memberIdCheck}">
+								<span id="memberIdCheckHelper"></span>
 								<br>
 								<div align="right"> 
 									<button id="idBtn"type="button" class="btn btn-primary">중복체크</button>
