@@ -29,28 +29,46 @@
 		});
 	});
 </script>
+<style th:include="/include/menu::css"></style>
 </head>
 <body>
-	<h1>회원탈퇴</h1>
-	<form id="removeForm" method="post" action="/removeMember">
-		<div>
-			<div>
-				<label>비밀번호</label>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-2">
+				<div th:include="/include/menu::sidemenu" class="sidenav"></div>
 			</div>
-			<div>
-				<input type="password" name="memberPw" id="memberPw">
+			<div class="col-sm-2">
 			</div>
-			<div>
-				<span id="memberHelper"></span>
+			<div class="col-sm-6">
+				<div align="center">
+					<br><br><br><br><br><br>
+					<h1 class="m-5"><strong>회원탈퇴</strong></h1>
+					<br><br><br><br>
+					<form id="removeForm" method="post" action="/removeMember" class="center">
+						<div>
+							<div align="left">
+								<label>비밀번호</label>
+							</div>
+							<div>
+								<input type="password" name="memberPw" id="memberPw" class="form-control" placeholder="비밀번호 입력">
+							</div>
+							<div>
+								<span id="memberHelper"></span>
+							</div>
+							<div>
+								<span th:text="${msg}" id="msg"></span>
+							</div>
+							<br>
+							<div>
+								<button type="button" id="btn">회원탈퇴</button>
+							</div>
+						</div>
+					</form>
+				</div>
 			</div>
-			<div>
-				<span th:text="${msg}" id="msg"></span>
-			</div>
-			<br>
-			<div>
-				<button type="button" id="btn">회원탈퇴</button>
+			<div class="col-sm-2">
 			</div>
 		</div>
-	</form>
+	</div>
 </body>
 </html>

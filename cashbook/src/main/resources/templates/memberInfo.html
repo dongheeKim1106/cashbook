@@ -11,43 +11,56 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style th:include="/include/menu::css"></style>
 </head>
 <body>
 	<div class="container-fluid">
-		<h1>회원 정보</h1>
-		<div th:include="/include/menu::sidemenu"></div>
-		<div>
-			<a th:href="@{removeMember}">회원탈퇴</a>
+		<div class="row">
+			<div class="col-sm-2">
+				<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+			</div>
+			<div class="col-sm-2">
+			</div>
+			<div class="col-sm-6">
+				<div align="center">
+					<h1 class="m-5"><strong>회원 정보</strong></h1>
+					<div align="right">
+						<a th:href="@{removeMember}" class="btn btn-info btn-sm">회원탈퇴</a>
+					</div>
+					<br>
+					<table class="table table-bordered center">
+						<tr>
+							<td class="table-active"><br><br><br><br>사진</td>
+							<td><img th:src="${'/upload/'+member.memberPic}"></td>
+						</tr>
+						<tr>
+							<td class="table-active">아이디</td>
+							<td th:text="${member.memberId}"></td>
+						</tr>
+						<tr>
+							<td class="table-active">이름</td>
+							<td th:text="${member.memberName}"></td>
+						</tr>
+						<tr>
+							<td class="table-active">주소</td>
+							<td th:text="${member.memberAddr}"></td>
+						</tr>
+						<tr>
+							<td class="table-active">전화번호</td>
+							<td th:text="${member.memberPhone}"></td>
+						</tr>
+						<tr>
+							<td class="table-active">이메일</td>
+							<td th:text="${member.memberEmail}"></td>
+						</tr>
+					</table>
+					<div align="right">
+						<a th:href="@{/modifyMember}" class="btn btn-primary">정보수정</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2"></div>
 		</div>
-		<div>
-			<a th:href="@{/modifyMember}">정보수정</a>
-		</div>
-		<table class="table">
-			<tr>
-				<td>사진</td>
-				<td><img th:src="${'/upload/'+member.memberPic}"></td>
-			</tr>
-			<tr>
-				<td>아이디</td>
-				<td th:text="${member.memberId}"></td>
-			</tr>
-			<tr>
-				<td>이름</td>
-				<td th:text="${member.memberName}"></td>
-			</tr>
-			<tr>
-				<td>주소</td>
-				<td th:text="${member.memberAddr}"></td>
-			</tr>
-			<tr>
-				<td>전화번호</td>
-				<td th:text="${member.memberPhone}"></td>
-			</tr>
-			<tr>
-				<td>이메일</td>
-				<td th:text="${member.memberEmail}"></td>
-			</tr>
-		</table>
 	</div>
 </body>
 </html>

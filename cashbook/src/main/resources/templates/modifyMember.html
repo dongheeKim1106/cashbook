@@ -11,6 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style th:include="/include/menu::css"></style>
 <script>
 	$(document).ready(function() {
 		$('#btn').click(function() {
@@ -44,47 +45,62 @@
 </script>
 </head>
 <body>
-	<h1 class="m-5"><strong>회원정보 수정</strong></h1>
-	<div th:include="/include/menu::sidemenu"></div>
-	<form method="post" action="/modifyMember" id="modifyForm">
-		<table class="table">
-			<tr>
-				<td>아이디</td>
-				<td><input type="text" th:value="${member.memberId}" name="memberId" id="memberId" readonly="readonly"></td>
-			</tr>
-			<tr>
-				<td>이름</td>
-				<td><input type="text" th:value="${member.memberName}" name="memberName" id="memberName"></td>
-			</tr>
-			<tr>
-				<td>주소</td>
-				<td><input type="text" th:value="${member.memberAddr}" name="memberAddr" id="memberAddr"></td>
-			</tr>
-			<tr>
-				<td>전화번호</td>
-				<td><input type="text" th:value="${member.memberPhone}" name="memberPhone" id="memberPhone"></td>
-			</tr>
-			<tr>
-				<td>이메일</td>
-				<td><input type="text" th:value="${member.memberEmail}" name="memberEmail" id="memberEmail"></td>
-			</tr>
-			<tr>
-				<td>비밀번호</td>
-				<td><input type="password" name="memberPw" id="memberPw" class="form-control" placeholder="PW 입력"></td>
-			</tr>
-			<tr>
-				<td>비밀번호 확인</td>
-				<td><input type="password" name="memberPw1" id="memberPw1" class="form-control" placeholder="PW 확인"></td>
-			</tr>
-		</table>
-		<!-- 비밀번호 틀리면 -->
-		<div align="center">
-			<span th:text="${msg}"></span>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-2">
+				<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+			</div>
+			<div class="col-sm-2">
+			</div>
+			<div class="col-sm-6">
+				<div align="center">
+					<br><br>
+					<h1 class="m-5"><strong>회원정보 수정</strong></h1>
+					<br>
+					<form method="post" action="/modifyMember" id="modifyForm">
+						<table class="table table-bordered center">
+							<tr>
+								<td class="table-active">아이디</td>
+								<td><input type="text" th:value="${member.memberId}" name="memberId" id="memberId" readonly="readonly" class="form-control"></td>
+							</tr>
+							<tr>
+								<td class="table-active">이름</td>
+								<td><input type="text" th:value="${member.memberName}" name="memberName" id="memberName" class="form-control" placeholder="이름 입력"></td>
+							</tr>
+							<tr>
+								<td class="table-active">주소</td>
+								<td><input type="text" th:value="${member.memberAddr}" name="memberAddr" id="memberAddr" class="form-control" placeholder="주소 입력"></td>
+							</tr>
+							<tr>
+								<td class="table-active">전화번호</td>
+								<td><input type="text" th:value="${member.memberPhone}" name="memberPhone" id="memberPhone" class="form-control" placeholder="전화번호 입력"></td>
+							</tr>
+							<tr>
+								<td class="table-active">이메일</td>
+								<td><input type="text" th:value="${member.memberEmail}" name="memberEmail" id="memberEmail" class="form-control" placeholder="이메일 입력"></td>
+							</tr>
+							<tr>
+								<td class="table-active">비밀번호</td>
+								<td><input type="password" name="memberPw" id="memberPw" class="form-control" placeholder="PW 입력"></td>
+							</tr>
+							<tr>
+								<td class="table-active">비밀번호 확인</td>
+								<td><input type="password" name="memberPw1" id="memberPw1" class="form-control" placeholder="PW 확인"></td>
+							</tr>
+						</table>
+						<!-- 비밀번호 틀리면 -->
+						<div align="center">
+							<span th:text="${msg}"></span>
+						</div>
+						<br>
+						<div align="center">
+							<button type="button" id="btn" class="btn btn-primary">정보수정</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="col-sm-2"></div>
 		</div>
-		<br>
-		<div align="center">
-			<button type="button" id="btn">정보수정</button>
-		</div>
-	</form>
+	</div>
 </body>
 </html>
