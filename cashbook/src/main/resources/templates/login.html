@@ -68,7 +68,12 @@
 							</div>
 							<br>
 							<div>
-								<a href="/findMember">아이디와 비밀번호가 기억나지 않아요.</a>
+								<!-- 이름 메일 전화번호 받기 -->
+								<a th:href="@{/findMemberId}">아이디가 기억나지 않아요</a>
+							</div>
+							<div>	
+								<!-- 아이디, 이메일 을 받으면 변경한 비밀번호 이메일로 전송 -->
+								<a th:href="@{/findMemberPw}">비밀번호가 기억나지 않아요</a>
 							</div>
 							<div>
 								<span th:text="${msg}"></span>

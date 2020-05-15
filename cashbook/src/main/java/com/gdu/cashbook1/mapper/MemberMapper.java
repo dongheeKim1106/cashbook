@@ -7,12 +7,14 @@ import com.gdu.cashbook1.vo.Member;
 
 @Mapper
 public interface MemberMapper {
+	// 비밀번호 바꾸기
+	public int updateMemberPw(Member member);
+	// 아이디 찾기
+	public String selectMemberIdByMember(Member member);
 	// 회원정보 수정
 	public int updateMember(Member member);
 	// 회원 탈퇴
 	public int deleteMember(LoginMember loginMember);
-	// 회원탈퇴 가능 유무
-	public String selectMemberPw(String memberPw);
 	// 회원정보 하나씩 보기
 	public Member selectMemberOne(LoginMember loginMember);
 	// 전화번호가 있으면 아이디 비밀번호 보여줌

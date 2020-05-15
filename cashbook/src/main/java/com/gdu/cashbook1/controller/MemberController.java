@@ -19,6 +19,51 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	// 비밀번호 찾기
+	@GetMapping("/findMemberPw")
+	public String findMemberPw(HttpSession session) {
+		// 로그인중일 때
+		if(session.getAttribute("loginMember") != null) {
+			return "redirect:/";
+		}
+		return "findMemberPw";
+	}
+	// 비밀번호 찾기 액션
+	@PostMapping("/findMemberPw")
+	public String findMemberPw(Model model, HttpSession session, Member member) {
+		// 로그인중일 때
+		if(session.getAttribute("loginMember") != null) {
+			return "redirect:/";
+		}
+		int row = memberService.getMemberPw(member);
+		String msg="아이디와 메일을 확인하세요";
+		if(row == 1) {
+			msg = "비밀번호를 입력한 메일로 전송하였습니다";
+		}
+		model.addAttribute("msg", msg);
+		return "memberPwView";
+	}
+	// 아이디 찾기 페이지 요청
+	@GetMapping("/findMemberId")
+	public String findMemberId(HttpSession session) {
+		// 로그인중일 때
+		if(session.getAttribute("loginMember") != null) {
+			return "redirect:/";
+		}
+		return "findMemberId";
+	}
+	// 아이디 찾기 액션
+	@PostMapping("/findMemberId")
+	public String findMemberId(Model model, HttpSession session, Member member) {
+		// 로그인중일 때
+		if(session.getAttribute("loginMember") != null) {
+			return "redirect:/";
+		}
+		String memberIdPart = memberService.getMemberIdByMember(member);
+		System.out.println(memberIdPart);
+		model.addAttribute("memberIdPart", memberIdPart);
+		return "memberIdView";
+	}
 	// 수정폼 요청
 	@GetMapping("/modifyMember")
 	public String modifyMember(Model model, HttpSession session) {
@@ -78,38 +123,6 @@ public class MemberController {
 		System.out.println(member);
 		model.addAttribute("member", member);
 		return "memberInfo";
-	}
-	// 아이디 찾기
-	@GetMapping("/findMember")
-	public String findMember(HttpSession session) {
-		// 로그인 중일때
-		if(session.getAttribute("loginMember") != null) {
-			return "redirect:/";
-		}
-		return "findMember";
-	}
-	// 아이디 찾기액션
-	@PostMapping("/findMember")
-	public String findMember(Model model, HttpSession session, @RequestParam("memberPhone") String memberPhone) {
-		System.out.println(memberPhone);
-		// 로그인 중일때
-		if(session.getAttribute("loginMember") != null) {
-			return "redirect:/";
-		}
-		String findMemberPhone = memberService.findMember(memberPhone);
-		System.out.println(findMemberPhone);
-		if(findMemberPhone == null) {
-			// 전화번호가 DB에 없으면
-			System.out.println("찾기 불가능");
-			model.addAttribute("msg", "아이디가 없습니다");
-		} else {
-			// 전화번호가 DB에 있으면
-			System.out.println("찾기 가능");
-			Member member = memberService.getMemberIdPw(memberPhone);
-			model.addAttribute("member", member);
-			System.out.println(member);
-		}
-		return "findMember";
 	}
 	// 아이디 중복체크
 	@PostMapping("/checkMemberId")
