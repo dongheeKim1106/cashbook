@@ -4,6 +4,13 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gdu.cashbook1.mapper.MemberMapper">
 	
+	<!-- 이미지 삭제 select -->
+	<select id="selectMemberPic" parameterType="String" resultType="String">
+		SELECT
+			member_pic
+		FROM member
+		WHERE member_id = #{memberId}
+	</select>
 	<!-- 비밀번호 찾기 순서 : 1.사용자 입력 확인 select 2.사용자의 정보가 일치하면 Pw변경(랜덤문자열로) update 3. 변경된 비밀번호를 email로 전송-->
 	<update id="updateMemberPw" parameterType="com.gdu.cashbook1.vo.Member">
 		UPDATE member 
@@ -27,7 +34,8 @@
 			member_pw = PASSWORD(#{memberPw}),
 			member_addr = #{memberAddr},
 			member_phone = #{memberPhone},
-			member_email = #{memberEmail}
+			member_email = #{memberEmail},
+			member_pic = #{memberPic}
 		WHERE member_id = #{memberId}
 	</update>
 	<!-- 회원 탈퇴 -->

@@ -57,7 +57,7 @@
 					<br><br>
 					<h1 class="m-5"><strong>회원정보 수정</strong></h1>
 					<br>
-					<form method="post" action="/modifyMember" id="modifyForm">
+					<form method="post" action="/modifyMember" id="modifyForm" enctype="multipart/form-data">
 						<table class="table table-bordered center">
 							<tr>
 								<td class="table-active">아이디</td>
@@ -66,6 +66,11 @@
 							<tr>
 								<td class="table-active">이름</td>
 								<td><input type="text" th:value="${member.memberName}" name="memberName" id="memberName" class="form-control" placeholder="이름 입력"></td>
+							</tr>
+							<tr>
+								<td class="table-active">사진</td>
+								<td align="left"><input type="file" name="memberPic" id="memberPic"><span class="text-danger" th:if="${#httpServletRequest.getParameter('imgMsg')!=null}"> .jpg, .png, .gif 파일만 첨부됩니다.</span>
+								</td>
 							</tr>
 							<tr>
 								<td class="table-active">주소</td>

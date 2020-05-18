@@ -1,10 +1,10 @@
 package com.gdu.cashbook1.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -28,6 +28,8 @@ public class MemberService {
 	private MemberidMapper memberidMapper;
 	@Autowired
 	private JavaMailSender javaMailSender;
+	@Value("D:\\cashbook\\cashbook\\cashbook\\src\\main\\resources\\static\\upload\\")
+	private String path;
 	
 	public int getMemberPw(Member member) {
 		// 랜덤 pw 추가
@@ -60,11 +62,72 @@ public class MemberService {
 		return memberMapper.selectMemberIdByMember(member);
 	}
 	// 회원 정보 수정
-	public int modifyMember(Member member) {
-		return memberMapper.updateMember(member);
+	public int modifyMember(MemberForm memberForm) {
+		// 이미지 이름 불러오기
+		String originMemberPic = memberMapper.selectMemberPic(memberForm.getMemberId());
+		// 이미지 추가
+		MultipartFile mf = memberForm.getMemberPic();
+		System.out.println(mf + "<--MemberService:modifyMember mf");
+		// 확장자 꺼내는 작업
+		String originName = mf.getOriginalFilename();
+		System.out.println(originName + "<--MemberService:modifyMember originName");
+		
+		String memberPic = "";
+		// 값이 없으면 삭제 X
+		if(!originName.equals("")) {
+			// 이미지 삭제
+			File originFile = new File(path + originMemberPic);
+			// 초기설정 이미지 삭제 X
+			if(originFile.exists() && !memberPic.equals("default.jpg")) {
+				originFile.delete();
+			}
+			int lastDot = originName.lastIndexOf(".");
+			String extension = originName.substring(lastDot);
+			memberPic = memberForm.getMemberId() + extension;
+		} else {
+			memberPic = originMemberPic;
+		}
+	
+		// DB 저장
+		Member member = new Member();
+		member.setMemberId(memberForm.getMemberId());
+		member.setMemberPw(memberForm.getMemberPw());
+		member.setMemberAddr(memberForm.getMemberAddr());
+		member.setMemberEmail(memberForm.getMemberEmail());
+		member.setMemberName(memberForm.getMemberName());
+		member.setMemberPhone(memberForm.getMemberPhone());
+		member.setMemberPic(memberPic);
+		System.out.println(member + "<-- MemberService.addMember:member");
+		int row = memberMapper.updateMember(member);
+		
+		if(!originName.equals("")) {
+			// 파일 저장
+			// 경로 저장
+			File file = new File(path + memberPic);
+			// mf의 파일을 옮겨준다
+			try {
+				mf.transferTo(file);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				// 예외처리를 코드에 구현하지 않아도 문제 없는 예외
+				throw new RuntimeException();
+			}
+			// 예외처리를 해야만 문법적으로 이상없는 예외
+		}
+		return row;
 	}
 	// 회원 탈퇴
 	public void removeMember(LoginMember loginMember) {
+		// 이미지 삭제
+		// 파일 이름 가져오기
+		String memberPic = memberMapper.selectMemberPic(loginMember.getMemberId());
+		// 파일 삭제
+		File file = new File(path + memberPic);
+		// 초기설정 이미지 삭제 X
+		if(file.exists() && !memberPic.equals("default.jpg")) {
+			file.delete();
+		}
 		// 트랜잭션
 		// 삽입
 		Memberid memberid = new Memberid();
@@ -102,19 +165,19 @@ public class MemberService {
 		MultipartFile mf = memberForm.getMemberPic();
 		// 확장자 꺼내는 작업
 		String originName = mf.getOriginalFilename();
-		/*
-		if(mf.getContentType().equals("image/jpg") || mf.getContentType().equals("image/png")) {
-			// 업로드 성공
-		} else {
-			// 업로드 실패
-		}
-		*/
 		System.out.println(originName + "<--MemberService.addMember:originName");
-		int lastDot = originName.lastIndexOf(".");
-		String extension = originName.substring(lastDot);
-	
-		// 새로운 이름생성 이미지 이름을 ID 이름과 동일하게
-		String memberPic = memberForm.getMemberId() + extension;
+		String memberPic = "";
+		// 파일 첨부를 안할시에
+		if(originName.equals("")) {
+			memberPic = "default.jpg";
+			
+		} else {
+			int lastDot = originName.lastIndexOf(".");
+			String extension = originName.substring(lastDot);
+		
+			// 새로운 이름생성 이미지 이름을 ID 이름과 동일하게
+			memberPic = memberForm.getMemberId() + extension;
+		}
 		// DB 저장
 		Member member = new Member();
 		member.setMemberId(memberForm.getMemberId());
@@ -127,20 +190,21 @@ public class MemberService {
 		System.out.println(member + "<-- MemberService.addMember:member");
 		int row = memberMapper.insertMember(member);
 		
-		// 파일 저장
-		// 경로 저장
-		String path = "D:\\cashbook\\cashbook\\cashbook\\src\\main\\resources\\static\\upload";
-		File file = new File(path + "\\" + memberPic);
-		// mf의 파일을 옮겨준다
-		try {
-			mf.transferTo(file);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			// 예외처리를 코드에 구현하지 않아도 문제 없는 예외
-			throw new RuntimeException();
+		if(!originName.equals("")) {
+			// 파일 저장
+			// 경로 저장
+			File file = new File(path + memberPic);
+			// mf의 파일을 옮겨준다
+			try {
+				mf.transferTo(file);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				// 예외처리를 코드에 구현하지 않아도 문제 없는 예외
+				throw new RuntimeException();
+			}
+			// 예외처리를 해야만 문법적으로 이상없는 예외
 		}
-		// 예외처리를 해야만 문법적으로 이상없는 예외
 		return row;
 	}
 }

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gdu.cashbook1.service.MemberService;
 import com.gdu.cashbook1.vo.LoginMember;
@@ -80,13 +81,22 @@ public class MemberController {
 	}
 	// 수정 액션
 	@PostMapping("/modifyMember")
-	public String modifyMember(HttpSession session, Member member) {
+	public String modifyMember(HttpSession session, MemberForm memberForm) {
 		// 로그인중이 아닐때
 		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
-		System.out.println(member);
-		memberService.modifyMember(member);
+		System.out.println(memberForm + "<-- memberForm");
+		MultipartFile mf = memberForm.getMemberPic();
+		String originName = mf.getOriginalFilename();
+		System.out.println(originName);
+		if(memberForm.getMemberPic() != null && !originName.equals("")) {
+			// 파일은 png, jpg, gif만 사용가능
+			if(!memberForm.getMemberPic().getContentType().equals("image/png") && !memberForm.getMemberPic().getContentType().equals("image/jpg") && !memberForm.getMemberPic().getContentType().equals("image/gif")) {
+				return "redirect:/modifyMember?imgMsg=n";
+			}
+		}
+		memberService.modifyMember(memberForm);
 		return "redirect:/memberInfo";
 	}
 	// 비밀번호 입력 화면 요청(회원탈퇴)
@@ -202,12 +212,21 @@ public class MemberController {
 	}
 	// member 테이블에 데이터 삽입 후 index페이지로 이동
 	@PostMapping("/addMember")
-	public String addMember(MemberForm memberForm, HttpSession session) { // 칼럼명이랑 같은 도메인 객체
+	public String addMember(Model model, HttpSession session, MemberForm memberForm) { // 칼럼명이랑 같은 도메인 객체
 		// 로그인 중
 		if(session.getAttribute("loginMember") != null) {
 			return "redirect:/";
 		}
 		System.out.println(memberForm + "<-- memberForm");
+		MultipartFile mf = memberForm.getMemberPic();
+		String originName = mf.getOriginalFilename();
+		System.out.println(originName);
+		if(memberForm.getMemberPic() != null && !originName.equals("")) {
+			// 파일은 png, jpg, gif만 사용가능
+			if(!memberForm.getMemberPic().getContentType().equals("image/png") && !memberForm.getMemberPic().getContentType().equals("image/jpg") && !memberForm.getMemberPic().getContentType().equals("image/gif")) {
+				return "redirect:/addMember?imgMsg=n";
+			}
+		}
 		// System.out.println(member);
 		memberService.addMember(memberForm);
 		return  "redirect:/index";
