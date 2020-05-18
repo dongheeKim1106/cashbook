@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.gdu.cashbook1.service.MemberService;
 import com.gdu.cashbook1.vo.LoginMember;
 import com.gdu.cashbook1.vo.Member;
+import com.gdu.cashbook1.vo.MemberForm;
 
 @Controller
 public class MemberController {
@@ -201,13 +202,14 @@ public class MemberController {
 	}
 	// member 테이블에 데이터 삽입 후 index페이지로 이동
 	@PostMapping("/addMember")
-	public String addMember(Member member, HttpSession session) { // 칼럼명이랑 같은 도메인 객체
+	public String addMember(MemberForm memberForm, HttpSession session) { // 칼럼명이랑 같은 도메인 객체
 		// 로그인 중
 		if(session.getAttribute("loginMember") != null) {
 			return "redirect:/";
 		}
-		System.out.println(member);
-		memberService.addMember(member);
+		System.out.println(memberForm + "<-- memberForm");
+		// System.out.println(member);
+		memberService.addMember(memberForm);
 		return  "redirect:/index";
 	}
 }

@@ -1,5 +1,7 @@
 package com.gdu.cashbook1.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +9,13 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gdu.cashbook1.mapper.MemberMapper;
 import com.gdu.cashbook1.mapper.MemberidMapper;
 import com.gdu.cashbook1.vo.LoginMember;
 import com.gdu.cashbook1.vo.Member;
+import com.gdu.cashbook1.vo.MemberForm;
 import com.gdu.cashbook1.vo.Memberid;
 
 @Service
@@ -93,7 +97,50 @@ public class MemberService {
 	}
 	
 	// member 추가
-	public int addMember(Member member) {
-		return memberMapper.insertMember(member);
+	public int addMember(MemberForm memberForm) {
+		
+		MultipartFile mf = memberForm.getMemberPic();
+		// 확장자 꺼내는 작업
+		String originName = mf.getOriginalFilename();
+		/*
+		if(mf.getContentType().equals("image/jpg") || mf.getContentType().equals("image/png")) {
+			// 업로드 성공
+		} else {
+			// 업로드 실패
+		}
+		*/
+		System.out.println(originName + "<--MemberService.addMember:originName");
+		int lastDot = originName.lastIndexOf(".");
+		String extension = originName.substring(lastDot);
+	
+		// 새로운 이름생성 이미지 이름을 ID 이름과 동일하게
+		String memberPic = memberForm.getMemberId() + extension;
+		// DB 저장
+		Member member = new Member();
+		member.setMemberId(memberForm.getMemberId());
+		member.setMemberPw(memberForm.getMemberPw());
+		member.setMemberAddr(memberForm.getMemberAddr());
+		member.setMemberEmail(memberForm.getMemberEmail());
+		member.setMemberName(memberForm.getMemberName());
+		member.setMemberPhone(memberForm.getMemberPhone());
+		member.setMemberPic(memberPic);
+		System.out.println(member + "<-- MemberService.addMember:member");
+		int row = memberMapper.insertMember(member);
+		
+		// 파일 저장
+		// 경로 저장
+		String path = "D:\\cashbook\\cashbook\\cashbook\\src\\main\\resources\\static\\upload";
+		File file = new File(path + "\\" + memberPic);
+		// mf의 파일을 옮겨준다
+		try {
+			mf.transferTo(file);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			// 예외처리를 코드에 구현하지 않아도 문제 없는 예외
+			throw new RuntimeException();
+		}
+		// 예외처리를 해야만 문법적으로 이상없는 예외
+		return row;
 	}
 }
