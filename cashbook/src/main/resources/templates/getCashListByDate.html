@@ -14,37 +14,81 @@
 <style th:include="/include/menu::css"></style>
 </head>
 <body>
-	<div th:include="/include/menu::sidemenu" class="sidenav"></div>
-	<div align="center">
-		<h1 class="m-5"><strong>오늘 날짜 리스트</strong></h1>
-	</div>
-	<br>
-	<div align="center">
-		<table border="1">
-			<thead>
-				<tr>
-					<th>수입, 지출</th>
-					<th>카테고리</th>
-					<th>가격</th>
-					<th>장소</th>
-					<th>메모</th>
-					<th>수정</th>
-					<th>삭제</th>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- thymleaf for문  -->
-				<tr th:each="list : ${cashList}">
-					<td th:text="${list.cashKind}"></td>
-					<td th:text="${list.categoryName}"></td>
-					<td th:text="${list.cashPrice}"></td>
-					<td th:text="${list.cashPlace}"></td>
-					<td th:text="${list.cashMemo}"></td>
-					<td><a href="">수정</a></td>
-					<td><a href="">삭제</a></td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-2">
+				<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+			</div>
+			<div class="col-sm-2">
+			</div>
+			<div class="col-sm-6">
+				<div align="left">
+					<!-- 년도  -->
+					<h1 th:text="${year + '년 가계부'}" class="m-5"></h1>
+				</div>
+				<br><br><br>
+				<div class="d-flex justify-content-between">
+					<div align="left">
+						<a th:href="@{/getCashListByDate(day=${day.plusDays(-1)})}" class="btn btn-primary">이전</a>
+					</div>
+					<div align="center">
+						<!-- 년 월 일 -->
+						<h3 th:text="${day}+'  '+${dayOfWeek}"></h3>
+					</div>
+					<div align="right">
+						<a th:href="@{/getCashListByDate(day=${day.plusDays(1)})}" class="btn btn-primary">다음</a>
+					</div>
+				</div>
+				<br>
+				<div align="center">
+					<table class="table table-bordered center">
+						<thead>
+							<tr class="table-active">
+								<th>카테고리</th>
+								<th>수입</th>
+								<th>지출</th>
+								<th>장소</th>
+								<th>메모</th>
+								<th>수정</th>
+								<th>삭제</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- thymleaf for문  -->
+							<tr th:each="list : ${cashList}">
+								<td th:text="${list.categoryName}"></td>
+								<!-- thymleaf if else -->
+								<td th:if="${list.cashKind} == '수입'" th:text="${'+' + list.cashPrice}"></td>
+								<td th:unless="${list.cashKind} == '수입'"></td>
+								<!-- thymleaf if else -->
+								<td th:if="${list.cashKind} == '지출'" th:text="${'-' + list.cashPrice}"></td>
+								<td th:unless="${list.cashKind} == '지출'"></td>
+								
+								<td th:text="${list.cashPlace}"></td>
+								<td th:text="${list.cashMemo}"></td>
+								<td><a href="">수정</a></td>
+								<td><a th:href="@{/removeCash(cashNo=${list.cashNo}, day=${day})}">삭제</a></td>
+							</tr>
+						</tbody>
+					</table>
+					<br><br>
+					<div class="d-flex mb-3">
+					    <div class="p-2 mr-auto">
+					    	<a href="" class="btn btn-primary">입력</a>
+					    </div>
+					    <div class="p-2">
+					    	<h3><strong>합계</strong></h3>
+					    </div>
+					    <div class="p-2">
+					    	<!-- 합계가 0보다 크면 앞에 +를 붙인다 -->
+					    	<h3 th:if="${cashKindSum > 0}" th:text="${'+' + cashKindSum}" class="text-primary"></h3>
+					    	<!-- 합계가 0보다 작으면 -->
+					    	<h3 th:if="${cashKindSum < 0}" th:text="${cashKindSum}" class="text-danger"></h3>
+					    </div>
+				  	</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>
