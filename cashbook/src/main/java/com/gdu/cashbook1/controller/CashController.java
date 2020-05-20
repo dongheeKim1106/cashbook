@@ -24,6 +24,42 @@ public class CashController {
 	@Autowired
 	private CashService cashService;
 	
+	@GetMapping("/getCashListByMonth")
+	public String getCashListByMonth(Model model, HttpSession session, @RequestParam(value="day", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
+		Calendar cDay = Calendar.getInstance();
+		// System.out.println(cDay.get(Calendar.MONTH) + 1);
+		
+		if(day == null) {
+			day = LocalDate.now();
+		} else {
+			// day -- cDay 변환
+			// LocalDate -> Calendar
+			// 오늘 날짜에서 day값과 동일하게 변경
+			cDay.set(day.getYear(), day.getMonthValue()-1, day.getDayOfMonth());
+		}
+		// 로그인이 되어있지 않으면
+		if(session.getAttribute("loginMember") == null) {
+			return "redirect:/";
+		}
+		// 0. 오늘 LocalDate타입 1. 오늘이 Calendar 무슨달 2. 이번달의 마지막 일 3. 이번달 1일의 요일
+		model.addAttribute("day", day);
+		// 지금 년도
+		model.addAttribute("year", cDay.get(Calendar.YEAR));
+		// 지금 월
+		model.addAttribute("month", cDay.get(Calendar.MONTH));
+		// 그 달의 마지막 일
+		model.addAttribute("lastDay", cDay.getActualMaximum(Calendar.DATE));
+		// 날짜를 하나 더 구해서
+		Calendar firstDay = cDay;
+		// 1로 변경
+		firstDay.set(Calendar.DATE, 1);
+		// 요일 1=일요일,.......7=토요일
+		// cDay.get(Calendar.DAY_OF_WEEK);
+		model.addAttribute("fristDayOfWeek", firstDay.get(Calendar.DAY_OF_WEEK));
+		System.out.println(firstDay.get(Calendar.DAY_OF_WEEK));
+		
+		return "getCashListByMonth";
+	}
 	// cash 리스트 삭제 후 다시 삭제한 날짜리스트로 이동
 	@GetMapping("/removeCash")
 	public String removeCash(HttpSession session, @RequestParam(value="day", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day, int cashNo) {
