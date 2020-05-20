@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>addCash</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style th:include="/include/menu::css"></style>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-2">
+				<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+			</div>
+			<div class="col-sm-2">
+			</div>
+			<div class="col-sm-6">
+				<div align="left">
+					<!-- 년도 표시 -->
+					<h1 th:text="${year + '년 가계부'}" class="m-5"></h1>
+				</div>
+				<br><br><br>
+				<div align="center">
+					<h4>수입/지출 입력</h4>
+				</div>
+				<br><br>
+				<form method="post" th:action="@{/addCash}">
+					<table class="table table-bordered center">
+						<tr>
+							<td class="table-active">카테고리</td>
+							<td>
+								<select id="categoryName" name="categoryName">
+									<option value="">카테고리 입력</option>
+									<option th:each="category : ${categoryList}" th:value="${category.categoryName}" th:text="${category.categoryName}"></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="table-active">수입/지출</td>
+							<td>
+								<select id="cashKind" name="cashKind">
+									<option value="">수입/지출 입력</option>
+									<option value="수압">수입</option>
+									<option value="지출">지출</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="table-active">금액</td>
+							<td><input type="text" name="cashPrice" id="cashPrice"></td>
+						</tr>
+						<tr>
+							<td class="table-active">장소</td>
+							<td><input type="text" name="cashPlace" id="cashPlace"></td>
+						</tr>
+						<tr>
+							<td class="table-active">메모</td>
+							<td><input type="text" name="cashMemo" id="cashMemo"></td>
+						</tr>
+					</table>
+					<br>
+					<div align="center">
+						<button type="button" id="btn">입력</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

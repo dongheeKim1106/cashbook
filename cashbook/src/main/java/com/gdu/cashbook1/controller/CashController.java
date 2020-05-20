@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gdu.cashbook1.service.CashService;
 import com.gdu.cashbook1.vo.Cash;
+import com.gdu.cashbook1.vo.Category;
+import com.gdu.cashbook1.vo.DayAndPrice;
 import com.gdu.cashbook1.vo.LoginMember;
 
 @Controller
@@ -24,6 +27,24 @@ public class CashController {
 	@Autowired
 	private CashService cashService;
 	
+	// 가계부 입력 페이지 요청
+	@GetMapping("/addCash")
+	public String addCash(Model model, HttpSession session, @RequestParam(value="day", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
+		// 로그인이 되어있지 않으면
+		if(session.getAttribute("loginMember") == null) {
+			return "redirect:/";
+		}
+		System.out.println(day + "<-- CashController:addCash day");
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+		System.out.println(year);
+		model.addAttribute("year", year);
+		List<Category> categoryList = cashService.getCategoryList();
+		System.out.println(categoryList);
+		model.addAttribute("categoryList", categoryList);
+		return "addCash";
+	}
+	// 월별 가계부 페이지 요청
 	@GetMapping("/getCashListByMonth")
 	public String getCashListByMonth(Model model, HttpSession session, @RequestParam(value="day", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
 		Calendar cDay = Calendar.getInstance();
@@ -37,6 +58,15 @@ public class CashController {
 			// 오늘 날짜에서 day값과 동일하게 변경
 			cDay.set(day.getYear(), day.getMonthValue()-1, day.getDayOfMonth());
 		}
+		// 일별 수입지출 총액 받아오기
+		String memberId = ((LoginMember)session.getAttribute("loginMember")).getMemberId();
+		System.out.println(memberId + "<-- CashController.getCashListByMonth : memberId");
+		int year = cDay.get(Calendar.YEAR);
+		System.out.println(year + "<-- CashController.getCashListByMonth : year");
+		int month = cDay.get(Calendar.MONTH)+1;
+		System.out.println(month + "<-- CashController.getCashListByMonth : month");
+		List<DayAndPrice> dayAndPriceList = cashService.getDayAndPrice(memberId, year, month);
+		System.out.println(dayAndPriceList);
 		// 로그인이 되어있지 않으면
 		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
@@ -44,11 +74,15 @@ public class CashController {
 		// 0. 오늘 LocalDate타입 1. 오늘이 Calendar 무슨달 2. 이번달의 마지막 일 3. 이번달 1일의 요일
 		model.addAttribute("day", day);
 		// 지금 년도
+		model.addAttribute("dayAndPriceList", dayAndPriceList);
 		model.addAttribute("year", cDay.get(Calendar.YEAR));
 		// 지금 월
-		model.addAttribute("month", cDay.get(Calendar.MONTH));
+		model.addAttribute("month", cDay.get(Calendar.MONTH)+1);
 		// 그 달의 마지막 일
 		model.addAttribute("lastDay", cDay.getActualMaximum(Calendar.DATE));
+		for(DayAndPrice dp : dayAndPriceList) {
+            System.out.println(dp);
+        }
 		// 날짜를 하나 더 구해서
 		Calendar firstDay = cDay;
 		// 1로 변경

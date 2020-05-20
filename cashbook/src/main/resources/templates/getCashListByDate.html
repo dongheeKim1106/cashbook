@@ -74,7 +74,8 @@
 					<br><br>
 					<div class="d-flex mb-3">
 					    <div class="p-2 mr-auto">
-					    	<a href="" class="btn btn-primary">입력</a>
+					    	<!-- 날짜를 보내준다 -->
+					    	<a th:href="@{/addCash(day=${day})}" class="btn btn-primary">입력</a>
 					    </div>
 					    <div class="p-2">
 					    	<h3><strong>합계</strong></h3>

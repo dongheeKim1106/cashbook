@@ -23,6 +23,12 @@
 		height: 40px;
 		background-color: gray;
 	}
+	span.gd-blue {
+		color: #0000FF;
+    }
+   span.gd-red {
+		color: #FF0000;
+    }
 </style>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -44,30 +50,40 @@
 			</div>
 			<div class="col-sm-6">
 				<div>
-					<h1 align="center" class="m-5"><strong>월별 가계부 관리</strong></h1>
-					<h3 th:text="${month + 1 + '월'}"></h3>
+					<h1 align="left" class="m-5" th:text="${year + '년 가계부'}"></h1>
 					<div class="d-flex justify-content-between">
 						<div align="left">
 							<a th:href="@{/getCashListByMonth(day=${day.plusMonths(-1)})}" class="btn btn-primary">이전</a>
 						</div>
 						<div align="center">
 							<!-- 년 월 일 -->
-							<!-- <h3 th:text="${day}+'  '+${dayOfWeek}"></h3> -->
+							<h3 th:text="${#temporals.format(day, 'yyyy년 MM월')}"></h3>
 						</div>
 						<div align="right">
 							<a th:href="@{/getCashListByMonth(day=${day.plusMonths(1)})}" class="btn btn-primary">다음</a>
 						</div>
 					</div>
 					<br>
-					<div class="gd-left gd-clear gd-title">일</div>
-					<div class="gd-left gd-title">월</div>
-					<div class="gd-left gd-title">화</div>
-					<div class="gd-left gd-title">수</div>
-					<div class="gd-left gd-title">목</div>
-					<div class="gd-left gd-title">금</div>
-					<div class="gd-left gd-title">토</div>
+					<div align="center">
+						<div class="gd-left gd-clear gd-title">일</div>
+						<div class="gd-left gd-title">월</div>
+						<div class="gd-left gd-title">화</div>
+						<div class="gd-left gd-title">수</div>
+						<div class="gd-left gd-title">목</div>
+						<div class="gd-left gd-title">금</div>
+						<div class="gd-left gd-title">토</div>
+					</div>
 					<!-- 5월은 lastDay == 31 index는 줄바꿈을 위해 -->
-					<div th:each="i,index : ${#numbers.sequence(1, lastDay+(fristDayOfWeek-1))}" th:text="${(i-(fristDayOfWeek-1))}>0 ? ${(i-(fristDayOfWeek-1))} : ''" th:class="${index.index%7} == 0 ? 'gd-clear gd-left': 'gd-left'"></div>
+					<div th:each="i,index : ${#numbers.sequence(1, lastDay+(fristDayOfWeek-1))}" th:class="${index.index%7} == 0 ? 'gd-clear gd-left': 'gd-left'">
+						<!-- 날짜 -->
+						<div th:text="${i-(fristDayOfWeek-1)}>0 ? ${i-(fristDayOfWeek-1)} : ''"></div>
+						<!-- 월안에 일별 합계 -->
+						<div th:each="dp : ${dayAndPriceList}">
+							<span th:if="${i-(fristDayOfWeek-1)} == ${dp.day}">
+								<span th:class="${dp.price} >= 0 ? 'gd-blue' : 'gd-red'" th:text="${dp.price}"></span>
+							</span>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

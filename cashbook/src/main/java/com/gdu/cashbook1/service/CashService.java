@@ -9,13 +9,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gdu.cashbook1.mapper.CashMapper;
+import com.gdu.cashbook1.mapper.CategoryMapper;
 import com.gdu.cashbook1.vo.Cash;
+import com.gdu.cashbook1.vo.Category;
+import com.gdu.cashbook1.vo.DayAndPrice;
 
 @Service
 @Transactional
 public class CashService {
 	@Autowired
 	private CashMapper cashMapper;
+	@Autowired
+	private CategoryMapper categoryMapper;
+	
+	// 카테고리 리스트
+	public List<Category> getCategoryList() {
+		return categoryMapper.selectCategoryList();
+	}
+	// 가계부 추가
+	public int addCash(Cash cash) {
+		return cashMapper.insertCash(cash);
+	}
+	// 달력에 일별 합계 돈
+	public List<DayAndPrice> getDayAndPrice(String memberId, int year, int month) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberId", memberId);
+		map.put("year", year);
+		map.put("month", month);
+		return cashMapper.selectDayAndPriceList(map);
+	}
 	
 	// 가계부 삭제
 	public int removeCash(int cashNo) {

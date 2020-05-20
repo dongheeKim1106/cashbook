@@ -1,13 +1,19 @@
 package com.gdu.cashbook1.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.cashbook1.vo.Cash;
+import com.gdu.cashbook1.vo.DayAndPrice;
 
 @Mapper
 public interface CashMapper {
+	// 가계부 입력
+	public int insertCash(Cash cash);
+	// 달려에 나오는 합계 구하기 map 안에 연도와 월이 들어간다
+	public List<DayAndPrice> selectDayAndPriceList(Map<String, Object> map);
 	// 가계부 목록 삭제
 	public int deleteCash(int cashNo);
 	// 값 합계 구하기
