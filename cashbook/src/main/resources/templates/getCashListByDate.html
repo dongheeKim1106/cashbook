@@ -66,7 +66,7 @@
 								
 								<td th:text="${list.cashPlace}"></td>
 								<td th:text="${list.cashMemo}"></td>
-								<td><a href="">수정</a></td>
+								<td><a th:href="@{/modifyCash(cashNo=${list.cashNo}, day=${day})}">수정</a></td>
 								<td><a th:href="@{/removeCash(cashNo=${list.cashNo}, day=${day})}">삭제</a></td>
 							</tr>
 						</tbody>

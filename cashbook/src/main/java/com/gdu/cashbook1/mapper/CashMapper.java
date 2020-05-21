@@ -10,6 +10,8 @@ import com.gdu.cashbook1.vo.DayAndPrice;
 
 @Mapper
 public interface CashMapper {
+	// 가계부 한개 리스트 출력
+	public Cash selectCashOne(int cashNo);
 	// 가계부 입력
 	public int insertCash(Cash cash);
 	// 달려에 나오는 합계 구하기 map 안에 연도와 월이 들어간다

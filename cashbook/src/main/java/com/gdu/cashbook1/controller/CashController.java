@@ -14,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gdu.cashbook1.service.CashService;
@@ -27,6 +28,23 @@ public class CashController {
 	@Autowired
 	private CashService cashService;
 	
+	// 가계부 수정 페이지 요청
+	@GetMapping("/modifyCash")
+	public String modifyCash(Model model, HttpSession session, @RequestParam(value="day", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day, @RequestParam(value="cashNo") int cashNo) {
+		// 로그인이 되어있지 않으면
+		if(session.getAttribute("loginMember") == null) {
+			return "redirect:/";
+		}
+		Calendar cal = Calendar.getInstance();
+		// 년도 받기
+		int year = cal.get(Calendar.YEAR);
+		System.out.println(year + "<--CashController:modifyCash year");
+		model.addAttribute("year", year);
+		Cash cash = cashService.getCashOne(cashNo);
+		System.out.println(cash + "<--CashController:modifyCash cash");
+		model.addAttribute("cash", cash);
+		return "modifyCash";
+	}
 	// 가계부 입력 페이지 요청
 	@GetMapping("/addCash")
 	public String addCash(Model model, HttpSession session, @RequestParam(value="day", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
@@ -42,7 +60,27 @@ public class CashController {
 		List<Category> categoryList = cashService.getCategoryList();
 		System.out.println(categoryList);
 		model.addAttribute("categoryList", categoryList);
+
 		return "addCash";
+	}
+	// 가계부 입력 action
+	@PostMapping("/addCash")
+	public String addCash(HttpSession session, Cash cash) {
+		// 로그인이 되어있지 않으면
+		if(session.getAttribute("loginMember") == null) {
+			return "redirect:/";
+		}
+		System.out.println(cash + "<--CashController:addCash cash");
+		// memberId 받기
+		String memberId = ((LoginMember)session.getAttribute("loginMember")).getMemberId();
+		System.out.println(memberId + "<--CashController:addCash memberId");
+		cash.setMemberId(memberId);
+		// 입력한 날 가계부 리스트로 가기위해
+		String day = cash.getCashDate();
+		System.out.println(day + "<--CashController:addCash day");
+		cashService.addCash(cash);
+		
+		return "redirect:/getCashListByDate?day="+day;
 	}
 	// 월별 가계부 페이지 요청
 	@GetMapping("/getCashListByMonth")

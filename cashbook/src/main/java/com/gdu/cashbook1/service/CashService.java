@@ -22,6 +22,10 @@ public class CashService {
 	@Autowired
 	private CategoryMapper categoryMapper;
 	
+	// cash 한개 리스트
+	public Cash getCashOne(int cashNo) {
+		return cashMapper.selectCashOne(cashNo);
+	}
 	// 카테고리 리스트
 	public List<Category> getCategoryList() {
 		return categoryMapper.selectCategoryList();

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>addCash</title>
+<title>CashList</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <!-- jQuery library -->
@@ -12,39 +12,6 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <style th:include="/include/menu::css"></style>
-<script>
-	// 유효성 검사
-	$(document).ready(function() {
-		$('#btn').click(function() {
-			let categoryName = $("#categoryName option:selected").val();
-			console.log(categoryName);
-			let cashKind = $("#cashKind option:selected").val();
-			if(categoryName.length < 1) {
-				alert("카테고리를 선택하세요");
-				return;
-			}
-			if(cashKind.length < 1) {
-				alert("수입 지출은 선택하세요");
-				return;
-			}
-			let cashDate = $('#cashDate').val();
-			console.log(cashDate);
-			if(cashDate.length < 1) {
-				alert("날짜를 선택하세요");
-				return;
-			}
-			if($('#cashPrice').val().length < 1) {
-				alert("금액을 입력해주세요");
-				return;
-			}
-			if($('#cashPlace').val().length < 1) {
-				alert("장소를 입력해주세요");
-				return;
-			} 
-			$('#addCashForm').submit();
-		});
-	});
-</script>
 </head>
 <body>
 	<div class="container-fluid">
@@ -61,10 +28,10 @@
 				</div>
 				<br><br><br>
 				<div align="center">
-					<h4>수입/지출 입력</h4>
+					<h4>수입/지출 수정</h4>
 				</div>
 				<br><br>
-				<form id="addCashForm" method="post" th:action="@{/addCash}">
+				<form id="modifyCashForm" method="post" th:action="@{/modify}">
 					<table class="table table-bordered center">
 						<tr>
 							<td class="table-active" style="width: 20%">카테고리</td>
@@ -78,7 +45,7 @@
 						<tr>
 							<td class="table-active">수입/지출</td>
 							<td align="center">
-								<select id="cashKind" name="cashKind" class="custom-select mb-3" style="width: 50%">
+								<select id="cashKind" name="cashKind" class="custom-select mb-3" style="width: 50%" th:value="${cash.cashKind}">
 									<option value="">수입/지출 입력</option>
 									<option value="수입">수입</option>
 									<option value="지출">지출</option>
@@ -87,15 +54,15 @@
 						</tr>
 						<tr>
 							<td class="table-active">날짜</td>
-							<td align="center"><input type="date" name="cashDate" id="cashDate" class="form-control" style="width: 50%"></td>
+							<td align="center"><input type="date" name="cashDate" id="cashDate" class="form-control" style="width: 50%" th:value="${cash.cashDate}"></td>
 						</tr>
 						<tr>
 							<td class="table-active">금액</td>
-							<td align="center"><input type="text" name="cashPrice" id="cashPrice" class="form-control" style="width: 50%" placeholder="금액 입력"></td>
+							<td align="center"><input type="text" name="cashPrice" id="cashPrice" class="form-control" style="width: 50%" placeholder="금액 입력" th:value="${cash.cashPrice}"></td>
 						</tr>
 						<tr>
 							<td class="table-active">장소</td>
-							<td align="center"><input type="text" name="cashPlace" id="cashPlace" class="form-control" style="width: 50%" placeholder="장소 입력"></td>
+							<td align="center"><input type="text" name="cashPlace" id="cashPlace" class="form-control" style="width: 50%" placeholder="장소 입력" th:value="${cash.cashPlace}"></td>
 						</tr>
 						<tr>
 							<td class="table-active">메모</td>

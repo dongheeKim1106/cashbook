@@ -78,7 +78,7 @@
 						<!-- 날짜 -->
 						<div th:text="${i-(fristDayOfWeek-1)}>0 ? ${i-(fristDayOfWeek-1)} : ''"></div>
 						<!-- 월안에 일별 합계 -->
-						<div th:each="dp : ${dayAndPriceList}">
+						<div th:each="dp : ${dayAndPriceList}" align="center">
 							<span th:if="${i-(fristDayOfWeek-1)} == ${dp.day}">
 								<span th:class="${dp.price} >= 0 ? 'gd-blue' : 'gd-red'" th:text="${dp.price}"></span>
 							</span>
