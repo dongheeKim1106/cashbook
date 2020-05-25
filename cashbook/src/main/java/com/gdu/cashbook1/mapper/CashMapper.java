@@ -10,6 +10,8 @@ import com.gdu.cashbook1.vo.DayAndPrice;
 
 @Mapper
 public interface CashMapper {
+	// 가계부 수정
+	public int updateCash(Cash cash);
 	// 가계부 한개 리스트 출력
 	public Cash selectCashOne(int cashNo);
 	// 가계부 입력

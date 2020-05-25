@@ -43,7 +43,25 @@ public class CashController {
 		Cash cash = cashService.getCashOne(cashNo);
 		System.out.println(cash + "<--CashController:modifyCash cash");
 		model.addAttribute("cash", cash);
+		System.out.println(cashNo + "cashNo");
+		model.addAttribute("cashNo", cashNo);
+		// categoryList 받기
+		List<Category> categoryList = cashService.getCategoryList();
+		System.out.println(categoryList);
+		model.addAttribute("categoryList", categoryList);
 		return "modifyCash";
+	}
+	// 가계부 수정 페이지 엑션
+	@PostMapping("/modifyCash")
+	public String modifyCash(HttpSession session, Cash cash, @RequestParam(value="cashNo") int cashNo) {
+		// 로그인이 되어있지 않으면
+		if(session.getAttribute("loginMember") == null) {
+			return "redirect:/";
+		}
+		System.out.println(cashNo + "cashNo 수정액션");
+		System.out.println(cash + "<-- CashController:modifyCash cash action");
+		cashService.modifyCash(cash);
+		return "redirect:/getCashListByDate?day="+cash.getCashDate();
 	}
 	// 가계부 입력 페이지 요청
 	@GetMapping("/addCash")

@@ -12,6 +12,39 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <style th:include="/include/menu::css"></style>
+<script>
+	// 유효성 검사
+	$(document).ready(function(){
+		$('#btn').click(function(){
+			let categoryName = $("#categoryName option:selected").val();
+			console.log(categoryName);
+			let cashKind = $("#cashKind option:selected").val();
+			if(categoryName.length < 1) {
+				alert("카테고리를 선택하세요");
+				return;
+			}
+			if(cashKind.length < 1) {
+				alert("수입 지출은 선택하세요");
+				return;
+			}
+			let cashDate = $('#cashDate').val();
+			console.log(cashDate);
+			if(cashDate.length < 1) {
+				alert("날짜를 선택하세요");
+				return;
+			}
+			if($('#cashPrice').val().length < 1) {
+				alert("금액을 입력해주세요");
+				return;
+			}
+			if($('#cashPlace').val().length < 1) {
+				alert("장소를 입력해주세요");
+				return;
+			} 
+			$('#modifyCashForm').submit();
+		});
+	});
+</script>
 </head>
 <body>
 	<div class="container-fluid">
@@ -30,8 +63,10 @@
 				<div align="center">
 					<h4>수입/지출 수정</h4>
 				</div>
+				<h1 th:text="${cashNo}"></h1>
 				<br><br>
-				<form id="modifyCashForm" method="post" th:action="@{/modify}">
+				<form id="modifyCashForm" method="post" th:action="@{/modifyCash}">
+					<input type="hidden" name="cashNo" th:value="${cash.cashNo}">
 					<table class="table table-bordered center">
 						<tr>
 							<td class="table-active" style="width: 20%">카테고리</td>
@@ -71,7 +106,7 @@
 					</table>
 					<br>
 					<div align="center">
-						<button type="button" id="btn" class="btn btn-primary">입력</button>
+						<button type="button" id="btn" class="btn btn-primary">수정</button>
 					</div>
 				</form>
 			</div>
