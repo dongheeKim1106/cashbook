@@ -74,12 +74,12 @@
 						<div class="gd-left gd-title">토</div>
 					</div>
 					<!-- 5월은 lastDay == 31 index는 줄바꿈을 위해 -->
-					<div th:each="i,index : ${#numbers.sequence(1, lastDay+(fristDayOfWeek-1))}" th:class="${index.index%7} == 0 ? 'gd-clear gd-left': 'gd-left'">
+					<div th:class="${index.index%7} == 0 ? 'gd-clear gd-left': 'gd-left'" th:each="i,index : ${#numbers.sequence(1, lastDay+(firstDayOfWeek-1))}">
 						<!-- 날짜 -->
-						<div th:text="${i-(fristDayOfWeek-1)}>0 ? ${i-(fristDayOfWeek-1)} : ''"></div>
+						<a th:href="${(i-(firstDayOfWeek-1))}>10 ? @{/getCashListByDate(day=${#temporals.format(day, 'yyyy-MM-')})}+${(i-(firstDayOfWeek-1))}: @{/getCashListByDate(day=${#temporals.format(day, 'yyyy-MM-')})}+'0'+${(i-(firstDayOfWeek-1))}" th:text="${i-(firstDayOfWeek-1)}>0 ? ${i-(firstDayOfWeek-1)} : ''" class="text-info"></a>
 						<!-- 월안에 일별 합계 -->
 						<div th:each="dp : ${dayAndPriceList}" align="center">
-							<span th:if="${i-(fristDayOfWeek-1)} == ${dp.day}">
+							<span th:if="${i-(firstDayOfWeek-1)} == ${dp.day}">
 								<span th:class="${dp.price} >= 0 ? 'gd-blue' : 'gd-red'" th:text="${dp.price}"></span>
 							</span>
 						</div>

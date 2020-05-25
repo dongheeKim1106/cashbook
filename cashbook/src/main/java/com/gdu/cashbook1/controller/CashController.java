@@ -103,6 +103,10 @@ public class CashController {
 	// 월별 가계부 페이지 요청
 	@GetMapping("/getCashListByMonth")
 	public String getCashListByMonth(Model model, HttpSession session, @RequestParam(value="day", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
+		// 로그인이 되어있지 않으면
+		if(session.getAttribute("loginMember") == null) {
+			return "redirect:/";
+		}
 		Calendar cDay = Calendar.getInstance();
 		// System.out.println(cDay.get(Calendar.MONTH) + 1);
 		
@@ -123,10 +127,6 @@ public class CashController {
 		System.out.println(month + "<-- CashController.getCashListByMonth : month");
 		List<DayAndPrice> dayAndPriceList = cashService.getDayAndPrice(memberId, year, month);
 		System.out.println(dayAndPriceList);
-		// 로그인이 되어있지 않으면
-		if(session.getAttribute("loginMember") == null) {
-			return "redirect:/";
-		}
 		// 0. 오늘 LocalDate타입 1. 오늘이 Calendar 무슨달 2. 이번달의 마지막 일 3. 이번달 1일의 요일
 		model.addAttribute("day", day);
 		// 지금 년도
@@ -145,7 +145,7 @@ public class CashController {
 		firstDay.set(Calendar.DATE, 1);
 		// 요일 1=일요일,.......7=토요일
 		// cDay.get(Calendar.DAY_OF_WEEK);
-		model.addAttribute("fristDayOfWeek", firstDay.get(Calendar.DAY_OF_WEEK));
+		model.addAttribute("firstDayOfWeek", firstDay.get(Calendar.DAY_OF_WEEK));
 		System.out.println(firstDay.get(Calendar.DAY_OF_WEEK));
 		
 		return "getCashListByMonth";
