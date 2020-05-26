@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>addBoard</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style th:include="/include/menu::css"></style>
+<script>
+	// 유효성 검사
+	$(document).ready(function() {
+		$('#btn').click(function() {
+			if($('#boardTitle').val().length < 1) {
+				alert("제목을 입력해주세요")
+				$('#boardTitle').focus();
+				return;
+			}
+			if($('#boardContent').val().length < 1) {
+				alert("내용을 입력해주세요")
+				$('#boardContent').focus();
+				return;
+			}
+			$('#addBoardForm').submit();
+		});
+	});
+</script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-2">
+				<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+			</div>
+			<div class="col-sm-3">
+			</div>
+			<div class="col-sm-4">
+				<div align="center">
+					<h1 class="m-5"><Strong>게시판 입력</Strong></h1>
+				</div>
+				<br><br>
+				<form method="post" th:action="@{/addBoard}" id="addBoardForm">
+					<div align="center" class="form-group">
+						<div align="left">
+							<label>제목 :</label>
+						</div>
+						<input type="text" name="boardTitle" id="boardTitle" class="form-control" placeholder="제목 입력">
+					</div>
+					<br>
+					<div align="left">
+						<label>내용 :</label>
+					</div>
+					<div align="center">
+						<textarea rows="5" cols="80" class="form-control" id="boardContent" name="boardContent"></textarea>
+					</div>
+					<br>
+					<div align="right">
+						<button type="button" id="btn" class="btn btn-success">입력</button>
+					</div>
+				</form>
+			</div>
+			<div class="col-sm-3">
+			</div>
+		</div>
+	</div>
+</body>
+</html>

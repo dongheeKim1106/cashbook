@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>modifyBoard</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style th:include="/include/menu::css"></style>
+<script>
+	//유효성 검사
+	$(document).ready(function() {
+		$('#btn').click(function() {
+			if($('#boardTitle').val().length < 1) {
+				alert("제목을 입력해주세요")
+				$('#boardTitle').focus();
+				return;
+			}
+			if($('#boardContent').val().length < 1) {
+				alert("내용을 입력해주세요")
+				$('#boardContent').focus();
+				return;
+			}
+			$('#modifyBoardForm').submit();
+		});
+	});
+</script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-2">
+				<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+			</div>
+			<div class="col-sm-2">
+			</div>
+			<div class="col-sm-6">
+				<div align="center">
+					<h1 class="m-5"><Strong>게시판 수정</Strong></h1>
+				</div>
+			<br><br>
+				<!-- 리스트 -->
+				<div align="center">
+					<form method="post" th:action="@{/modifyBoard}" id="modifyBoardForm">
+						<input type="hidden" name="boardNo" th:value="${board.boardNo}">
+						<table class="table">
+							<tr>
+								<td colspan="2"><input type="text" th:value="${board.boardTitle}"class="form-control" name="boardTitle" id="boardTitle"></td>
+							</tr>
+							<tr>
+								<td><input type="text" th:value="${board.memberId}" readonly="readonly" class="form-control" style="text-align: center"></td>
+								<td><input type="text" th:value="${#strings.substring(board.boardDate,0, 16)}" readonly="readonly" class="form-control" style="text-align: center"></td>
+							</tr>
+							<tr>
+								<td colspan="2"><textarea rows="10" cols="80" th:text="${board.boardContent}" class="form-control" name="boardContent" id="boardContent"></textarea></td>
+							</tr>
+						</table>
+						<div align="center">
+							<button type="button" class="btn btn-primary" id="btn">수정</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

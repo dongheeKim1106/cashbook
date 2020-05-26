@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>getBoardListOne</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style th:include="/include/menu::css"></style>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-2">
+				<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+			</div>
+			<div class="col-sm-2">
+			</div>
+			<div class="col-sm-6">
+				<div align="center">
+					<h1 class="m-5"><Strong>게시판 상세보기</Strong></h1>
+				</div>
+				<br>
+				<div class="d-flex justify-content-between">
+					<div align="left" th:if="${previousBoradNo != 0}">
+						<a th:href="@{getBoardListOne(boardNo=${previousBoradNo})}" class="btn btn-primary">이전</a>
+					</div>
+					<div align="left" th:unless="${previousBoradNo != 0}">
+						<a href="" class="btn btn-primary">이전</a>
+					</div>
+					<div align="right" th:if="${nextBoradNo != 0}">
+						<a th:href="@{getBoardListOne(boardNo=${nextBoradNo})}" class="btn btn-primary">다음</a>
+					</div>
+					<div align="left" th:unless="${nextBoradNo != 0}">
+						<a href="" class="btn btn-primary">다음</a>
+					</div>
+				</div>
+				<br>
+				<!-- 리스트 -->
+				<div align="center">
+					<table class="table">
+						<tr>
+							<td colspan="2"><input type="text" th:value="${board.boardTitle}" readonly="readonly" class="form-control"></td>
+						</tr>
+						<tr>
+							<td><input type="text" th:value="${board.memberId}" readonly="readonly" class="form-control" style="text-align: center"></td>
+							<td><input type="text" th:value="${#strings.substring(board.boardDate,0, 16)}" readonly="readonly" class="form-control" style="text-align: center"></td>
+						</tr>
+						<tr>
+							<td colspan="2"><textarea rows="10" cols="80" th:text="${board.boardContent}" readonly="readonly" class="form-control"></textarea></td>
+						</tr>
+					</table>
+					<div class="d-flex">
+						<div class="p-2 mr-auto">
+							<a th:href="@{/getBoardList}" class="btn btn-primary">목록</a>
+						</div>
+						<!-- 로그인 session memberId와 userName이 같으면 수정 삭제 버튼 보여줌 -->
+						<div class="p-2" th:if="${memberId.equals(board.memberId)}">
+							<a th:href="@{/modifyBoard(boardNo=${board.boardNo})}" class="btn btn-primary">수정</a>
+						</div>
+						<div class="p-2" th:if="${memberId.equals(board.memberId)}">
+							<a th:href="@{/removeBoard(boardNo=${board.boardNo})}" class="btn btn-primary">삭제</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
