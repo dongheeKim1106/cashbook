@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>memberAdmin</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style th:include="/include/menu::css"></style>
+<script>
+	$(document).ready(function() {
+		$('#btn').click(function() {
+			$('#form').submit();
+		});
+	});
+</script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-2">
+				<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+			</div>
+			<div class="col-sm-2">
+			</div>
+			<div class="col-sm-6">
+				<div align="center">
+					<h1 class="m-5"><Strong>회원 리스트</Strong></h1>
+				</div>
+				<br>
+				<div class="d-flex justify-content-between">
+					<div align="left" th:if="${currentPage > 1}">
+						<a th:href="@{getBoardList(currentPage=${currentPage - 1})}" class="btn btn-primary">이전</a>
+					</div>
+					<div th:unless="${currentPage > 1}" align="left">
+						<a class="btn btn-primary">이전</a>
+					</div>
+					<div align="right" th:if="${currentPage < lastPage}">
+						<a th:href="@{getBoardList(currentPage=${currentPage + 1})}" class="btn btn-primary">다음</a>
+					</div>
+					<div th:unless="${currentPage < lastPage}" align="right">
+						<a class="btn btn-primary">다음</a>
+					</div>
+				</div>
+				<br>
+				<!-- 리스트 -->
+				<div align="center">
+					<table class="table table-bordered center">
+						<thead>
+							<tr class="table-active">
+								<th>아이디</th>
+								<th>이름</th>
+								<th>주소</th>
+								<th>핸드폰</th>
+								<th>이메일</th>
+								<th style="width: 10%">탈퇴</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="list : ${list}">
+								<td th:text="${list.memberId}"></td>
+								<td th:text=${list.memberName}></td>
+								<td th:text="${list.memberAddr}"></td>
+								<td th:text="${list.memberPhone}"></td>
+								<td th:text="${list.memberEmail}"></td>
+								<td><a th:href="@{/removeAdmin}" class="btn btn-primary">탈퇴</a></td>
+							</tr>
+						</tbody>
+					</table>
+					<br>
+					<!-- 검색 -->
+					<div align="center">
+						<form id="form" method="get" th:action="@{/memberAdmin}">
+							<div class="input-group mb-3 d-flex justify-content-center" style="width:250px;" id="search">
+								<input type="text" name="searchWord" id="searchWord" class="form-control">
+								<div class="input-group-append">
+									<button type="button" id="btn" class="btn">검색</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+			</div>
+		</div>
+	</div>
+</body>
+</html>

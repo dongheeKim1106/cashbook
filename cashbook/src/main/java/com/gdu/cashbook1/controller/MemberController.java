@@ -73,7 +73,7 @@ public class MemberController {
 	@GetMapping("/modifyMember")
 	public String modifyMember(Model model, HttpSession session) {
 		// 로그인중이 아닐때
-		if(session.getAttribute("loginMember") == null && session.getAttribute("loginAdmin") == null) {
+		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
 		// 로그인된 memberId값 형 변환
@@ -86,7 +86,7 @@ public class MemberController {
 	@PostMapping("/modifyMember")
 	public String modifyMember(HttpSession session, MemberForm memberForm) {
 		// 로그인중이 아닐때
-		if(session.getAttribute("loginMember") == null && session.getAttribute("loginAdmin") == null) {
+		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
 		System.out.println(memberForm + "<-- memberForm");
@@ -106,7 +106,7 @@ public class MemberController {
 	@GetMapping("/removeMember")
 	public String removeMember(HttpSession session) {
 		// 로그인중이 아닐때
-		if(session.getAttribute("loginMember") == null && session.getAttribute("loginAdmin") == null) {
+		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
 		return "removeMember";
@@ -129,7 +129,7 @@ public class MemberController {
 	@GetMapping("/memberInfo")
 	public String memberInfo(Model model, HttpSession session) {
 		// 로그인중이 아닐때
-		if(session.getAttribute("loginMember") == null && session.getAttribute("loginAdmin") == null) {
+		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
 		// 형변환
@@ -142,7 +142,7 @@ public class MemberController {
 	@PostMapping("/checkMemberId")
 	public String checkMemberId(Model model, HttpSession session, @RequestParam("memberIdCheck") String memberIdCheck) {
 		// 로그인 중
-		if(session.getAttribute("loginMember") != null && session.getAttribute("loginAdmin") == null) {
+		if(session.getAttribute("loginMember") != null) {
 			return "redirect:/";
 		}
 		String confirmMemberId = memberService.checkMemberId(memberIdCheck);

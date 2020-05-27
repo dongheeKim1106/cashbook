@@ -1,5 +1,8 @@
 package com.gdu.cashbook1.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.cashbook1.vo.LoginMember;
@@ -7,6 +10,10 @@ import com.gdu.cashbook1.vo.Member;
 
 @Mapper
 public interface MemberMapper {
+	// lastPage
+	public int getTotalRow(String searchWord);
+	// 관리자 전용 회원 리스트
+	public List<Member> selectMemberList(Map<String, Object> map);
 	// 이미지 이름 불러오기
 	public String selectMemberPic(String memberId);
 	// 비밀번호 바꾸기

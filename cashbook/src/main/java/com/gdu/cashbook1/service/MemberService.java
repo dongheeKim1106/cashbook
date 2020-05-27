@@ -1,6 +1,9 @@
 package com.gdu.cashbook1.service;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +68,33 @@ public class MemberService {
 		}
 		return row;
 	}
-	
+	// 회원 전체 리스트 관리자
+	public Map<String, Object> getMemberListAdmin(int currentPage, String searchWord) {
+		System.out.println(searchWord);
+		
+		// 페이징을 위해서 필요한 값들을 map에 담아서 보내주기.
+		int rowPerPage = 10;
+		int beginRow = (currentPage-1)*rowPerPage;
+		//일회용 맵
+		Map<String, Object> map = new HashMap<>(); 
+		map.put("searchWord", searchWord);
+		map.put("beginRow", beginRow);
+		map.put("rowPerPage", rowPerPage);
+		
+		// 라스트페이지 출력
+		int totalRow = memberMapper.getTotalRow(searchWord);
+		int lastPage = totalRow/rowPerPage;
+		if(totalRow%rowPerPage != 0) {
+		   lastPage += 1;
+		}
+		
+		List<Member> list = memberMapper.selectMemberList(map);
+		Map<String, Object> map2 = new HashMap<>();
+		map2.put("list", list);
+		map2.put("lastPage", lastPage);
+		
+		return map2;
+	}
 	// 아이디 찾기
 	public String getMemberIdByMember(Member member) {
 		return memberMapper.selectMemberIdByMember(member);

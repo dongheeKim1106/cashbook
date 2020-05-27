@@ -27,7 +27,7 @@ public class BoardController {
 	@GetMapping("/modifyBoard")
 	public String modifyBoard(Model model, HttpSession session, @RequestParam(value="boardNo") int boardNo) {
 		// 로그인이 되어있지 않으면
-		if(session.getAttribute("loginMember") == null && session.getAttribute("loginAdmin") == null) {
+		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
 		Board board = boardService.getBoardListOne(boardNo);
@@ -40,7 +40,7 @@ public class BoardController {
 	@PostMapping("/modifyBoard")
 	public String modifyBoard(HttpSession session, Board board, @RequestParam(value="boardNo") int boardNo) {
 		// 로그인이 되어있지 않으면
-		if(session.getAttribute("loginMember") == null && session.getAttribute("loginAdmin") == null) {
+		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
 		System.out.println(board + "<-- BoardController:modifyBoard board 액션");
@@ -52,7 +52,7 @@ public class BoardController {
 	@GetMapping("/removeBoard")
 	public String removeBoard(HttpSession session, @RequestParam(value="boardNo") int boardNo) {
 		// 로그인이 되어있지 않으면
-		if(session.getAttribute("loginMember") == null && session.getAttribute("loginAdmin") == null) {
+		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
 		boardService.removeBoard(boardNo);
@@ -63,7 +63,7 @@ public class BoardController {
 	@GetMapping("/addBoard")
 	public String addBoard(HttpSession session) {
 		// 로그인이 되어있지 않으면
-		if(session.getAttribute("loginMember") == null && session.getAttribute("loginAdmin") == null) {
+		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
 		
@@ -73,7 +73,7 @@ public class BoardController {
 	@PostMapping("/addBoard")
 	public String addBoard(HttpSession session, Board board) {
 		// 로그인이 되어있지 않으면
-		if(session.getAttribute("loginMember") == null && session.getAttribute("loginAdmin") == null) {
+		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
 		// memberId session값과 동일
@@ -89,7 +89,7 @@ public class BoardController {
 	@GetMapping("/getBoardListOne")
 	public String getBoardListOne(Model model, HttpSession session, @RequestParam(value="boardNo") int boardNo, @RequestParam(value="currentPage", defaultValue = "1") int currentPage) {
 		// 로그인이 되어있지 않으면
-		if(session.getAttribute("loginMember") == null && session.getAttribute("loginAdmin") == null) {
+		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
 		// 다음
@@ -122,8 +122,8 @@ public class BoardController {
    @GetMapping("/getBoardList")
    public String getBoardList(Model model, HttpSession session, @RequestParam(value="currentPage", defaultValue = "1") int currentPage, @RequestParam(value="searchWord", defaultValue = "") String searchWord) {
 		// 로그인이 되어있지 않으면
-		if(session.getAttribute("loginMember") == null && session.getAttribute("loginAdmin") == null) {
-		return "redirect:/index";
+		if(session.getAttribute("loginMember") == null) {
+			return "redirect:/index";
 		}
 		  
 		// searchWord 디버깅

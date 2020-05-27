@@ -59,7 +59,7 @@ public class CommentController {
 	@GetMapping("/addComment")
 	public String addComment(HttpSession session, Comment comment, @RequestParam(value="boardNo") int boardNo) {
 		// 로그인이 되어있지 않으면
-		if(session.getAttribute("loginMember") == null && session.getAttribute("loginAdmin") == null) {
+		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
 		String memberId = ((LoginMember)session.getAttribute("loginMember")).getMemberId();
