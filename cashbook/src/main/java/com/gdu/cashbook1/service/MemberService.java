@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.gdu.cashbook1.mapper.BoardMapper;
+import com.gdu.cashbook1.mapper.CashMapper;
+import com.gdu.cashbook1.mapper.CommentMapper;
 import com.gdu.cashbook1.mapper.MemberMapper;
 import com.gdu.cashbook1.mapper.MemberidMapper;
 import com.gdu.cashbook1.vo.LoginMember;
@@ -27,8 +30,14 @@ public class MemberService {
 	@Autowired
 	private MemberidMapper memberidMapper;
 	@Autowired
+	private CashMapper cashMapper;
+	@Autowired
+	private BoardMapper boardMapper;
+	@Autowired
+	private CommentMapper commentMapper;
+	@Autowired
 	private JavaMailSender javaMailSender;
-	@Value("D:\\cashbook\\cashbook\\cashbook\\src\\main\\resources\\static\\upload\\")
+	@Value("D:\\spring_work\\maven.1590371302974\\cashbook\\src\\main\\resources\\static\\upload\\")
 	private String path;
 	
 	public int getMemberPw(Member member) {
@@ -134,6 +143,9 @@ public class MemberService {
 		memberid.setMemberId(loginMember.getMemberId());
 		memberidMapper.insertMemberid(memberid);
 		// 삭제
+		commentMapper.deleteCommentByMember(loginMember.getMemberId());
+		boardMapper.deleteBoardByMember(loginMember.getMemberId());
+		cashMapper.deleteCashByMember(loginMember.getMemberId());
 		memberMapper.deleteMember(loginMember);
 	}
 	// 회원정보 하나만 보여주기

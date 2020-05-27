@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gdu.cashbook1.mapper.BoardMapper;
+import com.gdu.cashbook1.mapper.CommentMapper;
 import com.gdu.cashbook1.vo.Board;
 
 @Service
@@ -16,6 +17,8 @@ import com.gdu.cashbook1.vo.Board;
 public class BoardService {
 	@Autowired
 	private BoardMapper boardMapper;
+	@Autowired
+	private CommentMapper commentMapper;
 	
 	// 다음게시물
 	public int nextBoardNo(int boardNo) {
@@ -29,9 +32,10 @@ public class BoardService {
 	public int modifyBoard(Board board) {
 		return boardMapper.updateBoard(board);
 	}
-	// 게시판 삭제
-	public int removeBoard(int boardNo) {
-		return boardMapper.deleteBoard(boardNo);
+	// 게시판 삭제 시 댓글도 삭제
+	public void removeBoard(int boardNo) {
+		commentMapper.deleteCommentByBoard(boardNo);
+		boardMapper.deleteBoard(boardNo);
 	}
 	// 게시판 추가
 	public int addBoard(Board board) {
@@ -59,7 +63,7 @@ public class BoardService {
 		int totalRow = boardMapper.getTotalRow(searchWord);
 		int lastPage = totalRow/rowPerPage;
 		if(totalRow%rowPerPage != 0) {
-		   lastPage +=1;
+		   lastPage += 1;
 		}
 		  
 		// list랑 라스트페이지 맵에 담아서 리턴

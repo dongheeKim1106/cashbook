@@ -9,6 +9,8 @@ import com.gdu.cashbook1.vo.Board;
 
 @Mapper
 public interface BoardMapper {
+	// 회원 탈퇴
+	public int deleteBoardByMember(String memberId);
 	// 다음 board_no 구하기
 	public int nextBoardNo(int boardNo);
 	// 이전 board_no 구하기

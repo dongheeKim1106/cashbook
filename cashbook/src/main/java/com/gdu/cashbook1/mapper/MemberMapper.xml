@@ -84,8 +84,9 @@
 	<select id="selectLoginMember" parameterType="com.gdu.cashbook1.vo.LoginMember" resultType="com.gdu.cashbook1.vo.LoginMember">
 		SELECT
 			member_id as memberId,
-			member_pw as memberPw
-		FROM member
+			member_pw as memberPw,
+			member_pic as memberPic
+ 		FROM member
 		WHERE member_id = #{memberId}
 		AND member_pw = PASSWORD(#{memberPw})
 	</select>

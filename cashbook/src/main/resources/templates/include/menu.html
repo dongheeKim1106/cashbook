@@ -16,7 +16,7 @@
 	  background-color: #677FFF;
 	  overflow-x: hidden;
 	  padding-top: 20px;
-	  text-align: center;
+	  text-align: left;
 	}
 	
 	.sidenav a {
@@ -48,11 +48,15 @@
 	<!-- fragment1 -->
 	<!-- 외부 호출 : /include/menu::sidemenu -->
 	<div th:fragment="sidemenu">
-		<div> 
+		<!-- 일반회원 -->
+		<div th:if="${session.loginMember?.memberId}"> 
 			<div align="center">
+				<div>
+					<img th:src="@{${'/upload/'+session.loginMember.memberPic}}" style="width:80px; height:80px;">
+				</div>
 				<h5 th:text="${session.loginMember.memberId} +  님" class="m-5"></h5>
 			</div>
-			<div align="center">
+			<div align="left">
 				<a th:href="@{/home}">홈</a>
 				<br>
 				<a th:href="@{/memberInfo}">회원정보</a>
@@ -62,6 +66,23 @@
 				<a th:href="@{/getCashListByMonth}">월별 가계부관리</a>
 				<br>
 				<a th:href="@{/getBoardList}">게시판</a>
+				<br>
+				<a th:href="@{/logout}">로그아웃</a>
+			</div>
+		</div>
+		<!-- 관리자 -->
+		<div th:if="${session.loginAdmin?.adminId}">
+			<div align="center">
+				<h5 th:text="${session.loginAdmin.adminId} + ' ' +관리자" class="m-5"></h5>
+			</div>
+			<div align="left">
+				<a th:href="@{/home}">홈</a>
+				<br>
+				<a th:href="@{/memberAdmin}">회원정보</a>
+				<br>
+				<a th:href="@{/categoryAdmin}">카테고리 추가</a>
+				<br>
+				<a th:href="@{/BoardAdmin}">게시판 관리</a>
 				<br>
 				<a th:href="@{/logout}">로그아웃</a>
 			</div>

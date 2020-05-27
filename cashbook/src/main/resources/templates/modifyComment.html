@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>modifyComment</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style th:include="/include/menu::css"></style>
+<script>
+	$(document).ready(function() {
+		$('#btn').click(function() {
+			if($('#commentContent').val().length < 1) {
+				alert("댓글을 입력해주세요")
+				$('#commentContent').focus();
+				return;
+			}
+			$('#modifyContentForm').submit();
+		});
+	});
+</script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-2">
+				<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+			</div>
+			<div class="col-sm-2">
+			</div>
+			<div class="col-sm-6">
+				<div align="center">
+					<h1 class="m-5"><Strong>댓글 수정</Strong></h1>
+				</div>
+				<br>
+				<br>
+				<div align="center">
+					<form method="post" th:action="@{/modifyComment}" id="modifyContentForm">
+						<div align="left">
+							<label>댓글</label>
+							<input type="text" class="form-control" name="commentContent" id="commentContent" th:value="${comment.commentContent}">
+						</div>
+						<br><br><br>
+						<div align="center">
+							<button type="button" class="btn btn-primary" id="btn">수정</button>
+						</div>
+						<input type="hidden" name="commentNo" th:value="${comment.commentNo}">
+						<input type="hidden" name="boardNo" th:value="${comment.boardNo}">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

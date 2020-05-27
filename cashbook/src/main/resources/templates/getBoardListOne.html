@@ -12,6 +12,18 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <style th:include="/include/menu::css"></style>
+<script>
+	$(document).ready(function() {
+		$('#addComment').click(function(){
+			if($('#addcommentContent').val().length < 1) {
+				alert("댓글을 입력해 주세요");
+				$('#addcommentContent').focus();
+				return;
+			}
+			$('#commentForm').submit();
+		});
+	});
+</script>
 </head>
 <body>
 	<div class="container-fluid">
@@ -31,13 +43,13 @@
 						<a th:href="@{getBoardListOne(boardNo=${previousBoradNo})}" class="btn btn-primary">이전</a>
 					</div>
 					<div align="left" th:unless="${previousBoradNo != 0}">
-						<a href="" class="btn btn-primary">이전</a>
+						<a class="btn btn-primary">이전</a>
 					</div>
 					<div align="right" th:if="${nextBoradNo != 0}">
 						<a th:href="@{getBoardListOne(boardNo=${nextBoradNo})}" class="btn btn-primary">다음</a>
 					</div>
 					<div align="left" th:unless="${nextBoradNo != 0}">
-						<a href="" class="btn btn-primary">다음</a>
+						<a class="btn btn-primary">다음</a>
 					</div>
 				</div>
 				<br>
@@ -65,6 +77,61 @@
 						</div>
 						<div class="p-2" th:if="${memberId.equals(board.memberId)}">
 							<a th:href="@{/removeBoard(boardNo=${board.boardNo})}" class="btn btn-primary">삭제</a>
+						</div>
+					</div>
+					<br><br>
+					<!-- 댓글 -->
+					<div align="center">
+						<form id="commentForm" method="get" th:action="@{/addComment}">
+							<input type="hidden" name="boardNo" th:value="${board.boardNo}">
+							<div class="input-group mb-3 d-flex justify-content-center" style="width: 98%">
+								<input type="text" name="commentContent" class="form-control" id="addcommentContent">
+								<div>
+									<button type="button" id="addComment" class="btn">댓글 입력</button>
+								</div>
+							</div>
+						</form>
+					</div>
+					<br>
+					<form method="post" th:action="@{/modifyComment}" id="modifyCommentForm">
+						<table class="table">
+							<tr class="center">
+								<th style="width: 20%">작성자</th>
+								<th style="width: 60%">내용</th>
+								<th style="width: 10%">수정</th>
+								<th style="width: 10%">삭제</th>
+							</tr>
+							<tr th:each="list, index : ${commentList}" class="center">
+								<td><input type="text" id="userName" th:value="${list.memberId}" class="form-control" readonly="readonly"></td>
+								<td><input type="text" name="commentContent" th:id="commentContent" th:value="${list.commentContent}" readonly="readonly" class="form-control" ></td>
+								<td>
+									<a th:if="${memberId.equals(list.memberId)}" th:href="@{/modifyComment(commentNo=${list.commentNo}, boardNo=${board.boardNo})}" class="btn btn-info">수정</a>
+									<a th:unless="${memberId.equals(list.memberId)}" class="btn btn-info">수정</a>
+								</td>
+								<td>
+									<!-- 아이디와 작성자가 맞지 않으면 비활성화 -->
+									<a th:if="${memberId.equals(list.memberId)}" th:href="@{/removeComment(commentNo=${list.commentNo}, boardNo=${board.boardNo})}" class="btn btn-info">삭제</a>
+									<a th:unless="${memberId.equals(list.memberId)}" class="btn btn-info">삭제</a>
+								</td>
+								<td>
+									<input type="hidden" name="commentNo" th:value="${list.commentNo}">
+									<input type="hidden" name="boardNo" th:value="${list.boardNo}">
+								</td>
+							</tr>
+						</table>
+						<input type="hidden" id="memberId" th:value="${memberId}">
+					</form>
+					<br>
+					<!-- 댓글 페이징 -->
+					<div class="d-flex justify-content-center mb-3">
+						<div class="p-2">
+							<a th:if="${currentPage > 1}" th:href="@{/getBoardListOne(currentPage=${currentPage-1}, boardNo=${board.boardNo})}" class="btn btn-info">이전</a>
+							<a th:unless="${currentPage > 1}" class="btn btn-info">이전</a>
+						</div>
+						<div class="p-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+						<div class="p-2">
+							<a th:if="${currentPage < lastPage}" th:href="@{/getBoardListOne(currentPage=${currentPage+1}, boardNo=${board.boardNo})}" class="btn btn-info">다음</a>
+							<a th:unless="${currentPage < lastPage}" class="btn btn-info">다음</a>
 						</div>
 					</div>
 				</div>
