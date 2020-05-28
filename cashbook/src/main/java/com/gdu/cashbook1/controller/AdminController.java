@@ -34,7 +34,7 @@ public class AdminController {
 			return "redirect:/index";
 		}
 		memberService.removeMemberAdmin(memberId);
-		return "redirect:/";
+		return "redirect:memberAdmin";
 	}
 	// 관리자 categoryList
 	@GetMapping("/categoryAdmin")
