@@ -50,6 +50,7 @@ public class AdminController {
 		System.out.println(map.get("lastPage") + "getBoardListOne lastPage");
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("lastPage", map.get("lastPage"));
+		model.addAttribute("currentPage", currentPage);
 	
 		return "categoryAdmin";
 	}

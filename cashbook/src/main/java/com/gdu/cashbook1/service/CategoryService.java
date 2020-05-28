@@ -18,7 +18,7 @@ public class CategoryService {
 	private CategoryMapper categoryMapper;
 	
 	public Map<String, Object> getCategoryList(int currentPage) {
-		int rowPerPage = 5;
+		int rowPerPage = 3;
 		int beginRow = (currentPage-1)*rowPerPage;
 		Map<String, Object> map = new HashMap<>();
 		map.put("beginRow", beginRow);
