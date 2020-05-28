@@ -35,13 +35,13 @@
 				<br>
 				<div class="d-flex justify-content-between">
 					<div align="left" th:if="${currentPage > 1}">
-						<a th:href="@{getBoardList(currentPage=${currentPage - 1})}" class="btn btn-primary">이전</a>
+						<a th:href="@{memberAdmin(currentPage=${currentPage - 1})}" class="btn btn-primary">이전</a>
 					</div>
 					<div th:unless="${currentPage > 1}" align="left">
 						<a class="btn btn-primary">이전</a>
 					</div>
 					<div align="right" th:if="${currentPage < lastPage}">
-						<a th:href="@{getBoardList(currentPage=${currentPage + 1})}" class="btn btn-primary">다음</a>
+						<a th:href="@{memberAdmin(currentPage=${currentPage + 1})}" class="btn btn-primary">다음</a>
 					</div>
 					<div th:unless="${currentPage < lastPage}" align="right">
 						<a class="btn btn-primary">다음</a>
@@ -68,7 +68,7 @@
 								<td th:text="${list.memberAddr}"></td>
 								<td th:text="${list.memberPhone}"></td>
 								<td th:text="${list.memberEmail}"></td>
-								<td><a th:href="@{/removeAdmin}" class="btn btn-primary">탈퇴</a></td>
+								<td><a th:href="@{/removeAdmin(memberId=${list.memberId})}" class="btn btn-primary">탈퇴</a></td>
 							</tr>
 						</tbody>
 					</table>

@@ -177,6 +177,28 @@ public class MemberService {
 		cashMapper.deleteCashByMember(loginMember.getMemberId());
 		memberMapper.deleteMember(loginMember);
 	}
+	// 회원 탈퇴
+	public void removeMemberAdmin(String memberId) {
+		// 이미지 삭제
+		// 파일 이름 가져오기
+		String memberPic = memberMapper.selectMemberPic(memberId);
+		// 파일 삭제
+		File file = new File(path + memberPic);
+		// 초기설정 이미지 삭제 X
+		if(file.exists() && !memberPic.equals("default.jpg")) {
+			file.delete();
+		}
+		// 트랜잭션
+		// 삽입
+		Memberid memberid = new Memberid();
+		memberid.setMemberId(memberId);
+		memberidMapper.insertMemberid(memberid);
+		// 삭제
+		commentMapper.deleteCommentByMember(memberId);
+		boardMapper.deleteBoardByMember(memberId);
+		cashMapper.deleteCashByMember(memberId);
+		memberMapper.deleteMemberAdmin(memberId);
+	}
 	// 회원정보 하나만 보여주기
 	public Member getMemberOne(LoginMember loginMember) {
 		return memberMapper.selectMemberOne(loginMember);

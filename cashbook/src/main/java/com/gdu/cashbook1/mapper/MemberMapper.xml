@@ -55,6 +55,11 @@
 			member_pic = #{memberPic}
 		WHERE member_id = #{memberId}
 	</update>
+	<!-- 멤버삭제 -->
+	<delete id="deleteMemberAdmin" parameterType="String">
+		DELETE FROM member
+		WHERE member_id = #{memberId}
+	</delete>
 	<!-- 회원 탈퇴 -->
 	<delete id="deleteMember" parameterType="com.gdu.cashbook1.vo.LoginMember">
 		DELETE FROM member

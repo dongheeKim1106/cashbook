@@ -10,6 +10,8 @@ import com.gdu.cashbook1.vo.Member;
 
 @Mapper
 public interface MemberMapper {
+	// 회원 탈퇴
+	public int deleteMemberAdmin(String memberId);
 	// lastPage
 	public int getTotalRow(String searchWord);
 	// 관리자 전용 회원 리스트

@@ -26,6 +26,16 @@ public class AdminController {
 	@Autowired
 	private CategoryService categoryService;
 	
+	// 관리자 삭제
+	@GetMapping("/removeAdmin")
+	public String removeAdmin(HttpSession session, @RequestParam(value="memberId") String memberId) {
+		// 관리자 로그인이 되어있지 않으면
+		if(session.getAttribute("loginAdmin") == null) {
+			return "redirect:/index";
+		}
+		memberService.removeMemberAdmin(memberId);
+		return "redirect:/";
+	}
 	// 관리자 categoryList
 	@GetMapping("/categoryAdmin")
 	public String getCategroy(Model model, HttpSession session, @RequestParam(value="currentPage", defaultValue = "1") int currentPage) {
