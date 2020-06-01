@@ -9,6 +9,12 @@ import com.gdu.cashbook1.vo.Category;
 
 @Mapper
 public interface CategoryMapper {
+	// 카테고리 수정
+	public int updateCategory(String categoryName);
+	// 카테고리 하나만 보여주기
+	public Category selectCategoryOne(String categoryName);
+	// 카테고리 삭제
+	public int deleteCategory(String categoryName);
 	// 카테고리 입력
 	public int insertCategory(String categoryName);
 	// 총 페이지 수 구하기

@@ -47,14 +47,12 @@
 						<thead>
 							<tr class="table-active">
 								<td>카테고리</td>
-								<td>수정</td>
 								<td>삭제</td>
 							</tr>
 						</thead>
 						<tbody>
 							<tr th:each="list : ${list}">
 								<td th:text="${list.categoryName}"></td>
-								<td><a th:href="@{modifyCategory(categoryName=${list.categoryName})}">수정</a></td>
 								<td><a th:href="@{removeCategory(categoryName=${list.categoryName})}">삭제</a></td>
 							</tr>
 						</tbody>

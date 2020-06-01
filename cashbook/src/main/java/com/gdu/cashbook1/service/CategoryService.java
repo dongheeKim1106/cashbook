@@ -17,6 +17,18 @@ public class CategoryService {
 	@Autowired
 	private CategoryMapper categoryMapper;
 	
+	// 카테고리 수정
+	public int modifyCategory(String categoryName) {
+		return categoryMapper.updateCategory(categoryName);
+	}
+	// 카테고리 리스트 한개
+	public Category getCategoryListOne(String categoryName) {
+		return categoryMapper.selectCategoryOne(categoryName);
+	}
+	// 카테고리 삭제
+	public int removeCategory(String categoryName) {
+		return categoryMapper.deleteCategory(categoryName);
+	}
 	// 카테고리 입력
 	public int addCategory(String categoryName) {
 		return categoryMapper.insertCategory(categoryName);

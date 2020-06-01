@@ -15,6 +15,7 @@ import com.gdu.cashbook1.service.AdminService;
 import com.gdu.cashbook1.service.CategoryService;
 import com.gdu.cashbook1.service.MemberService;
 import com.gdu.cashbook1.vo.Admin;
+import com.gdu.cashbook1.vo.Category;
 import com.gdu.cashbook1.vo.LoginMember;
 
 @Controller
@@ -26,6 +27,44 @@ public class AdminController {
 	@Autowired
 	private CategoryService categoryService;
 	
+	// 카테고리 수정 페이지 요청
+	@GetMapping("/modifyCategory")
+	public String modifyCategory(Model model, HttpSession session, @RequestParam(value="categoryName") String categoryName) {
+		// 관리자 로그인이 되어있지 않으면
+		if(session.getAttribute("loginAdmin") == null) {
+			return "redirect:/index";
+		}
+		Category category = categoryService.getCategoryListOne(categoryName);
+		System.out.println(category + "<--AdminController:modifyCategory categoryName");
+		model.addAttribute("category", category);
+		
+		return "modifyCategory";
+	}
+	// 카테고리 수정
+	@PostMapping("/modifyCategory")
+	public String modifyCategory(HttpSession session, @RequestParam(value="categoryName") String categoryName) {
+		// 관리자 로그인이 되어있지 않으면
+		if(session.getAttribute("loginAdmin") == null) {
+			return "redirect:/index";
+		}
+		System.out.println(categoryName + "<--AdminController:modifyCategory categoryName");
+		
+		categoryService.modifyCategory(categoryName);
+		
+		return "redirect:categoryAdmin";
+	}
+	// 카테고리 삭제
+	@GetMapping("/removeCategory")
+	public String removeCategory(HttpSession session, @RequestParam(value="categoryName") String categoryName) {
+		// 관리자 로그인이 되어있지 않으면
+		if(session.getAttribute("loginAdmin") == null) {
+			return "redirect:/index";
+		}
+		System.out.println(categoryName + "<--AdminController:removeCategory categoryName");
+		categoryService.removeCategory(categoryName);
+		
+		return "redirect:/categoryAdmin";
+	}
 	// 카테고리 입력 페이지 요청
 	@GetMapping("/addCategory")
 	public String addCategory(HttpSession session) {
