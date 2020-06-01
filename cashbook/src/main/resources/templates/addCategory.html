@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>addCategory</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style th:include="/include/menu::css"></style>
+<script>
+	$(document).ready(function(){
+		$('#btn').click(function(){
+			if($('#categoryName').val().length < 1) {
+				alert("카테고리를 입력하세요");
+				$('#categoryName').focus();
+				return;
+			}
+			$('#addCategoryForm').submit();
+		});
+	});
+</script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-2">
+				<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+			</div>
+			<div class="col-sm-3">
+			</div>
+			<div class="col-sm-4" >
+				<div align="center">
+					<h1 class="m-5"><Strong>Category 입력</Strong></h1>
+				</div>
+				<br>
+				<br>
+				<form method="post" th:action="@{addCategory}" id="addCategoryForm">
+					<div align="center" class="form-group">
+						<div align="left">
+							<label>Category</label>
+						</div>
+						<input type="text" name="categoryName" id="categoryName" class="form-control" placeholder="Category 입력">
+					</div>
+					<br>
+					<div align="center">
+						<button type="button" id="btn" class="btn">입력</button>
+					</div>
+				</form>
+			</div>
+			<div class="col-sm-3">
+			</div>
+		</div>
+	</div>
+</body>
+</html>

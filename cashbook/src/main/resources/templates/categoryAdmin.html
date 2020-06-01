@@ -21,9 +21,9 @@
 			</div>
 			<div class="col-sm-2">
 			</div>
-			<div class="col-sm-6">
+			<div class="col-sm-6" >
 				<div align="center">
-					<h1 class="m-5"><Strong>Categry</Strong></h1>
+					<h1 class="m-5"><Strong>Category</Strong></h1>
 				</div>
 				<br>
 				<div class="d-flex justify-content-between">
@@ -43,15 +43,28 @@
 				<br>
 				<!-- 리스트 -->
 				<div align="center">
-					<table class="table table-bordered center">
+					<table class="table table-bordered center" style="width: 65%">
 						<thead>
 							<tr class="table-active">
 								<td>카테고리</td>
+								<td>수정</td>
+								<td>삭제</td>
 							</tr>
 						</thead>
 						<tbody>
+							<tr th:each="list : ${list}">
+								<td th:text="${list.categoryName}"></td>
+								<td><a th:href="@{modifyCategory(categoryName=${list.categoryName})}">수정</a></td>
+								<td><a th:href="@{removeCategory(categoryName=${list.categoryName})}">삭제</a></td>
+							</tr>
 						</tbody>
 					</table>
+					<br>
+					<div align="center">
+						<a th:href="@{addCategory(currentPage=${currentPage})}" class="btn btn-primary">입력</a>
+					</div>
+				</div>
+				<div class="col-sm-2">
 				</div>
 			</div>
 		</div>

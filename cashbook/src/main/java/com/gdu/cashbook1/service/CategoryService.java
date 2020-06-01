@@ -17,8 +17,13 @@ public class CategoryService {
 	@Autowired
 	private CategoryMapper categoryMapper;
 	
+	// 카테고리 입력
+	public int addCategory(String categoryName) {
+		return categoryMapper.insertCategory(categoryName);
+	}
+	// 카테고리 리스트
 	public Map<String, Object> getCategoryList(int currentPage) {
-		int rowPerPage = 3;
+		int rowPerPage = 5;
 		int beginRow = (currentPage-1)*rowPerPage;
 		Map<String, Object> map = new HashMap<>();
 		map.put("beginRow", beginRow);

@@ -9,6 +9,8 @@ import com.gdu.cashbook1.vo.Category;
 
 @Mapper
 public interface CategoryMapper {
+	// 카테고리 입력
+	public int insertCategory(String categoryName);
 	// 총 페이지 수 구하기
 	public int getTotalRow();
 	// 관리자 카테고리 리스트

@@ -26,6 +26,28 @@ public class AdminController {
 	@Autowired
 	private CategoryService categoryService;
 	
+	// 카테고리 입력 페이지 요청
+	@GetMapping("/addCategory")
+	public String addCategory(HttpSession session) {
+		// 관리자 로그인이 되어있지 않으면
+		if(session.getAttribute("loginAdmin") == null) {
+			return "redirect:/index";
+		}
+		
+		return "addCategory";
+	}
+	// 카테고리 입력 액션
+	@PostMapping("/addCategory")
+	public String addCategory(HttpSession session, @RequestParam(value="categoryName") String categoryName) {
+		// 관리자 로그인이 되어있지 않으면
+		if(session.getAttribute("loginAdmin") == null) {
+			return "redirect:/index";
+		}
+		System.out.println(categoryName + "<--AdminController:addCategory categoryName");
+		categoryService.addCategory(categoryName);
+		
+		return "redirect:/categoryAdmin";
+	}
 	// 관리자 삭제
 	@GetMapping("/removeAdmin")
 	public String removeAdmin(HttpSession session, @RequestParam(value="memberId") String memberId) {
@@ -46,8 +68,8 @@ public class AdminController {
 		System.out.println(currentPage);
 		Map<String, Object> map = categoryService.getCategoryList(currentPage);
 		
-		System.out.println(map.get("list") + "<--getBoardListOne list");
-		System.out.println(map.get("lastPage") + "getBoardListOne lastPage");
+		System.out.println(map.get("list") + "<--getCategroy list");
+		System.out.println(map.get("lastPage") + "getCategroy lastPage");
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("lastPage", map.get("lastPage"));
 		model.addAttribute("currentPage", currentPage);
