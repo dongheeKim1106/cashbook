@@ -5,12 +5,12 @@
 <mapper namespace="com.gdu.cashbook1.mapper.CashMapper">
 	<!-- 회원 탈퇴시 가계부 삭제 -->
 	<delete id="deleteCashByMember" parameterType="String">
-		DELETE FROM cash
+		DELETE FROM cashbook_cash
 		WHERE member_id = #{memberId}
 	</delete>
 	<!-- 가계부 수정 -->
 	<update id="updateCash" parameterType="com.gdu.cashbook1.vo.Cash">
-		UPDATE cash
+		UPDATE cashbook_cash
 		SET category_name = #{categoryName},
 			cash_kind = #{cashKind},
 			cash_date = #{cashDate},
@@ -29,12 +29,12 @@
 			cash_price as cashPrice,
 			cash_place as cashPlace,
 			cash_memo as cashMemo
-		FROM cash
+		FROM cashbook_cash
 		WHERE cash_no = #{cashNo}
 	</select>
 	<!-- 가계부 입력 -->
 	<insert id="insertCash" parameterType="com.gdu.cashbook1.vo.Cash">
-		INSERT INTO cash(
+		INSERT INTO cashbook_cash(
 			member_id,
 			cash_date,
 			cash_kind,
@@ -57,7 +57,7 @@
 		SELECT DAY(cash_date) as day, 
 			   SUM(CASE WHEN cash_kind='수입' THEN cash_price
 			   		WHEN cash_kind='지출' THEN -cash_price END) as price
-		FROM cash
+		FROM cashbook_cash
 		WHERE member_id = #{memberId}
 		AND YEAR(cash_date) = #{year}
 		AND MONTH(cash_date) = #{month}
@@ -65,7 +65,7 @@
 	</select>
 	<!-- 가계부 삭제 -->
 	<delete id="deleteCash" parameterType="int">
-		DELETE FROM cash
+		DELETE FROM cashbook_cash
 		WHERE cash_no = #{cashNo}
 	</delete>
 	<!-- 총 합계 구하기 -->
@@ -73,12 +73,12 @@
 		SELECT
 			(SELECT 
 				IFNULL(SUM(cash_price), 0) 
-			FROM cash
+			FROM cashbook_cash
 			WHERE member_id = #{memberId} AND cash_kind = '수입' AND cash_date = #{cashDate})
 			-
 			(SELECT 
 				IFNULL(SUM(cash_price), 0)
-			FROM cash
+			FROM cashbook_cash
 			WHERE member_id = #{memberId} AND cash_kind = '지출' AND cash_date = #{cashDate})
 		FROM dual
 	</select>
@@ -91,7 +91,7 @@
 			cash_price as cashPrice,
 			cash_place as cashPlace,
 			cash_memo as cashMemo
-		FROM cash
+		FROM cashbook_cash
 		WHERE member_id = #{memberId}
 		AND cash_date = #{cashDate}
 		ORDER BY cash_no ASC

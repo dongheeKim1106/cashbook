@@ -5,7 +5,7 @@
 <mapper namespace="com.gdu.cashbook1.mapper.CategoryMapper">
 	<!-- 카테고리 수정 -->
 	<update id="updateCategory" parameterType="String">
-		UPDATE category
+		UPDATE cashbook_category
 		SET category_name = #{categoryName}
 		WHERE category_name = #{categoryName}
 	</update>
@@ -13,17 +13,17 @@
 	<select id="selectCategoryOne" parameterType="String" resultType="com.gdu.cashbook1.vo.Category">
 		SELECT
 			category_name as categoryName
-		FROM category
+		FROM cashbook_category
 		WHERE category_name = #{categoryName}
 	</select>
 	<!-- 카테고리 삭제 -->
 	<delete id="deleteCategory" parameterType="String">
-		DELETE FROM category
+		DELETE FROM cashbook_category
 		WHERE category_name = #{categoryName}
 	</delete>
 	<!-- 카테고리 입력 -->
 	<insert id="insertCategory" parameterType="String">
-		INSERT INTO category (
+		INSERT INTO cashbook_category (
 			category_name
 		) VALUES (
 			#{categoryName}
@@ -33,20 +33,20 @@
 	<select id="getTotalRow" parameterType="int" resultType="int">
 		SELECT
 			COUNT(*)
-		FROM category
+		FROM cashbook_category
 	</select>
 	<!-- 관리자 카테고리 리스트 -->
-	<select id="selectCategory" parameterType="Map" resultType="Map">
+	<select id="selectCategory" parameterType="Map" resultType="com.gdu.cashbook1.vo.Category">
 		SELECT
 			category_name as categoryName,
 			category_desc as categoryDesc
-		FROM category
+		FROM cashbook_category
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 가계부 입력 수정에 쓰일 카테고리 리스트 -->
 	<select id="selectCategoryList" resultType="com.gdu.cashbook1.vo.Category">
 		SELECT
 			category_name as categoryName
-		FROM category
+		FROM cashbook_category
 	</select>
 </mapper>

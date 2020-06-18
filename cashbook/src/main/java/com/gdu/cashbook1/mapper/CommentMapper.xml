@@ -5,12 +5,12 @@
 <mapper namespace="com.gdu.cashbook1.mapper.CommentMapper">
 	<!-- 회원탈퇴시 회원 댓글 삭제 -->
 	<delete id="deleteCommentByMember" parameterType="String">
-		DELETE FROM comment
+		DELETE FROM cashbook_comment
 		WHERE member_id = #{memberId}
 	</delete>
 	<!-- 게시판 삭제시 댓글 삭제 -->
 	<delete id="deleteCommentByBoard" parameterType="int">
-		DELETE FROM comment
+		DELETE FROM cashbook_comment
 		WHERE board_no = #{boardNo}
 	</delete>
 	<!-- 댓글 상세보기 -->
@@ -19,23 +19,23 @@
 			comment_no as commentNo,
 			board_no as boardNo,
 			comment_content as commentContent
-		FROM comment
+		FROM cashbook_comment
 		WHERE comment_no = #{commentNo}
 	</select>
 	<!-- 댓글 수정 -->
 	<update id="updateComment" parameterType="com.gdu.cashbook1.vo.Comment">
-		UPDATE comment
+		UPDATE cashbook_comment
 		SET comment_content = #{commentContent}
 		WHERE comment_no = #{commentNo}
 	</update>
 	<!-- 댓글 삭제 -->
 	<delete id="deleteComment" parameterType="int">
-		DELETE FROM comment
+		DELETE FROM cashbook_comment
 		WHERE comment_no = #{commentNo}
 	</delete>
 	<!-- 댓글 입력 -->
 	<insert id="insertComment" parameterType="com.gdu.cashbook1.vo.Comment">
-		INSERT INTO comment(
+		INSERT INTO cashbook_comment(
 			board_no,
 			member_id,
 			comment_content
@@ -49,7 +49,7 @@
 	<select id="getTotalRow" parameterType="int" resultType="int">
 		SELECT
 			COUNT(*)
-		FROM comment
+		FROM cashbook_comment
 		WHERE board_no = #{boardNo}
 	</select>
 	<!-- 댓글 리스트 -->
@@ -59,7 +59,7 @@
 			board_no as boardNo,
 			member_id as memberId,
 			comment_content as commentContent
-		FROM comment
+		FROM cashbook_comment
 		WHERE board_no = #{boardNo}
 		ORDER BY comment_no DESC
 		LIMIT #{beginRow}, #{rowPerPage}

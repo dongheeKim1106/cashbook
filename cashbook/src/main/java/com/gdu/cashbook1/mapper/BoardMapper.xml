@@ -5,36 +5,12 @@
 <mapper namespace="com.gdu.cashbook1.mapper.BoardMapper">
 	<!-- 회원 탈퇴시 게시물 삭제 -->
 	<delete id="deleteBoardByMember" parameterType="String">
-		DELETE FROM board
+		DELETE FROM cashbook_board
 		WHERE member_id = #{memberId}
 	</delete>
-	<!-- 다음 게시물 -->
-	<select id="nextBoardNo" parameterType="int" resultType="int">
-		<!-- 부등호 오류 수정 -->
-		<![CDATA[
-			SELECT 
-				IFNULL(MAX(board_no), 0)
-			FROM board
-			WHERE board_no IN(
-				(SELECT MIN(board_no) FROM board WHERE board_no > #{boardNo})
-			)
-		]]>
-	</select>
-	<!-- 이전 게시물 -->
-	<select id="previousBoradNo" parameterType="int" resultType="int">
-		<!-- 부등호 오류 수정 -->
-		<![CDATA[
-			SELECT 
-				IFNULL(MAX(board_no), 0)
-			FROM board
-			WHERE board_no IN(
-				(SELECT MAX(board_no) FROM board WHERE board_no < #{boardNo})
-			)
-		]]>
-	</select>
 	<!-- 게시판 수정 -->
 	<update id="updateBoard" parameterType="com.gdu.cashbook1.vo.Board">
-		UPDATE board
+		UPDATE cashbook_board
 		SET board_title = #{boardTitle},
 			board_content = #{boardContent},
 			board_date = now()
@@ -42,12 +18,12 @@
 	</update>
 	<!-- 게시판 삭제 -->
 	<delete id="deleteBoard" parameterType="int">
-		DELETE FROM board
+		DELETE FROM cashbook_board
 		WHERE board_no = #{boardNo}
 	</delete>
 	<!-- 게시판 추가 -->
 	<insert id="insertBoard" parameterType="com.gdu.cashbook1.vo.Board">
-		INSERT INTO board(
+		INSERT INTO cashbook_board(
 			member_id,
 			board_title,
 			board_content,
@@ -67,24 +43,24 @@
 			board_content as boardContent,
 			member_id as memberId,
 			board_date as boardDate
-		FROM board
+		FROM cashbook_board
 		WHERE board_no = #{boardNo}
 	</select>
 	<!-- 라스트페이지 구하기위해서 totalRow 구하기 -->
 	<select id="getTotalRow" resultType="int">
 	   SELECT
 	      COUNT(*)
-	   FROM board
+	   FROM cashbook_board
 	   WHERE board_title LIKE CONCAT('%', #{searchWord}, '%')
 	</select>
 	<!-- 게시판 페이지 리스트 -->
-	<select id="selectBoardList" parameterType="com.gdu.cashbook1.vo.Board" resultType="Map">
+	<select id="selectBoardList" parameterType="com.gdu.cashbook1.vo.Board" resultType="com.gdu.cashbook1.vo.Board">
 		SELECT
 	         board_no as boardNo,
 	         board_title as boardTitle,
 	         board_date as boardDate,
 	         member_id as memberId
-		FROM board
+		FROM cashbook_board
 		WHERE board_title LIKE CONCAT('%', #{searchWord}, '%')
 		ORDER BY board_no DESC
 		LIMIT #{beginRow}, #{rowPerPage}

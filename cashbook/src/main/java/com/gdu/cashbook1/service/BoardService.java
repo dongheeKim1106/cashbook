@@ -20,14 +20,6 @@ public class BoardService {
 	@Autowired
 	private CommentMapper commentMapper;
 	
-	// 다음게시물
-	public int nextBoardNo(int boardNo) {
-		return boardMapper.nextBoardNo(boardNo);
-	}
-	// 이전게시물 boardNo 받기
-	public int previousBoradNo(int boardNo) {
-		return boardMapper.previousBoradNo(boardNo);
-	}
 	// 게시판 수정
 	public int modifyBoard(Board board) {
 		return boardMapper.updateBoard(board);

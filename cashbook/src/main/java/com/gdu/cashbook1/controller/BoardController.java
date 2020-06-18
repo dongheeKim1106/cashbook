@@ -92,14 +92,6 @@ public class BoardController {
 		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
-		// 다음
-		int nextBoradNo = boardService.nextBoardNo(boardNo);
-		System.out.println(nextBoradNo + "<-- BoardController:getBoardListOne memberId nextBoradNo");
-		model.addAttribute("nextBoradNo", nextBoradNo);
-		// 이전
-		int previousBoradNo = boardService.previousBoradNo(boardNo);
-		System.out.println(previousBoradNo + "<-- BoardController:getBoardListOne memberId previousBoradNo");
-		model.addAttribute("previousBoradNo", previousBoradNo);
 		String memberId = ((LoginMember)session.getAttribute("loginMember")).getMemberId();
 		System.out.println(memberId + "<-- BoardController:getBoardListOne memberId");
 		model.addAttribute("memberId", memberId);
@@ -125,7 +117,7 @@ public class BoardController {
 		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/index";
 		}
-		  
+		
 		// searchWord 디버깅
 		System.out.println(searchWord);
 		

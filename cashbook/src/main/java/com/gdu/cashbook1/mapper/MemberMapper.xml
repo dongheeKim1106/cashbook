@@ -6,7 +6,7 @@
 	<select id="getTotalRow" resultType="int">
 	   SELECT
 	      COUNT(*)
-	   FROM member
+	   FROM cashbook_member
 	   WHERE member_id LIKE CONCAT('%', #{searchWord}, '%')
 	</select>
 	<!-- 회원 정보 리스트 관리자용 -->
@@ -17,7 +17,7 @@
 			member_addr as memberAddr,
 			member_phone as memberPhone,
 			member_email as memberEmail
-		FROM member
+		FROM cashbook_member
 		WHERE member_id LIKE CONCAT('%', #{searchWord}, '%')
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
@@ -25,12 +25,12 @@
 	<select id="selectMemberPic" parameterType="String" resultType="String">
 		SELECT
 			member_pic
-		FROM member
+		FROM cashbook_member
 		WHERE member_id = #{memberId}
 	</select>
 	<!-- 비밀번호 찾기 순서 : 1.사용자 입력 확인 select 2.사용자의 정보가 일치하면 Pw변경(랜덤문자열로) update 3. 변경된 비밀번호를 email로 전송-->
 	<update id="updateMemberPw" parameterType="com.gdu.cashbook1.vo.Member">
-		UPDATE member 
+		UPDATE cashbook_member 
 		SET member_pw = PASSWORD(#{memberPw})
 		WHERE member_id = #{memberId}
 		AND member_email = #{memberEmail}
@@ -39,14 +39,14 @@
 	<select id="selectMemberIdByMember" parameterType="com.gdu.cashbook1.vo.Member" resultType="String">
 		SELECT
 			CONCAT(SUBSTRING(member_id, 1, 3), '****')
-		FROM member
+		FROM cashbook_member
 		WHERE member_name = #{memberName}
 		AND member_phone = #{memberPhone}
 		AND member_email = #{memberEmail}
 	</select>
 	<!-- 회원 정보 수정 -->
 	<update id="updateMember" parameterType="com.gdu.cashbook1.vo.Member">
-		UPDATE member
+		UPDATE cashbook_member
 		SET member_name = #{memberName},
 			member_pw = PASSWORD(#{memberPw}),
 			member_addr = #{memberAddr},
@@ -57,12 +57,12 @@
 	</update>
 	<!-- 멤버삭제 -->
 	<delete id="deleteMemberAdmin" parameterType="String">
-		DELETE FROM member
+		DELETE FROM cashbook_member
 		WHERE member_id = #{memberId}
 	</delete>
 	<!-- 회원 탈퇴 -->
 	<delete id="deleteMember" parameterType="com.gdu.cashbook1.vo.LoginMember">
-		DELETE FROM member
+		DELETE FROM cashbook_member
 		WHERE member_id = #{memberId}
 		AND member_pw = PASSWORD(#{memberPw})
 	</delete>
@@ -75,7 +75,7 @@
 			member_phone as memberPhone,
 			member_email as memberEmail,
 			member_pic as memberPic
-		FROM member
+		FROM cashbook_member
 		WHERE member_id = #{memberId}
 	</select>
 	<!-- 아이디 비밀번호 보여주는 쿼리 -->
@@ -83,23 +83,23 @@
 		SELECT
 			member_id as memberId,
 			member_pw as memberPw
-		FROM member
+		FROM cashbook_member
 		WHERE member_phone = #{memberPhone}
 	</select>
 	<!-- 아이디 비밀번호를 찾기위해 필요한 전화번호가 있나 없나 확인하는 쿼리 -->
 	<select id="findMember" parameterType="String" resultType="String">
 		SELECT
 			member_phone
-		FROM member
+		FROM cashbook_member
 		WHERE member_phone = #{memberPhone}
 	</select>
 	<!-- id중복체크 쿼리 -->
 	<select id="selectMemberId" parameterType="String" resultType="String">
 		SELECT
 			member_id
-		FROM (	SELECT member_id FROM member
+		FROM (	SELECT member_id FROM cashbook_member
 				UNION
-				SELECT member_id FROM memberid) t
+				SELECT member_id FROM cashbook_memberid) t
 		WHERE member_id = #{memberIdCheck}
 	</select>
 	<!-- login 쿼리 -->
@@ -108,14 +108,14 @@
 			member_id as memberId,
 			member_pw as memberPw,
 			member_pic as memberPic
- 		FROM member
+ 		FROM cashbook_member
 		WHERE member_id = #{memberId}
 		AND member_pw = PASSWORD(#{memberPw})
 	</select>
 	<!-- member 데이터 추가 쿼리 -->
 	<!-- PASSWORD함수는 비밀번호 암호화 -->
 	<insert id="insertMember" parameterType="com.gdu.cashbook1.vo.Member">
-		INSERT INTO member(
+		INSERT INTO cashbook_member(
 			member_id, 
 			member_pw, 
 			member_name, 

@@ -40,7 +40,7 @@ public class MemberService {
 	private CommentMapper commentMapper;
 	@Autowired
 	private JavaMailSender javaMailSender;
-	@Value("D:\\spring_work\\maven.1590625732630\\cashbook\\src\\main\\resources\\static\\upload\\")
+	@Value("D:\\spring_work\\maven.1592201146594\\cashbook\\src\\main\\resources\\static\\upload\\")
 	private String path;
 	
 	public int getMemberPw(Member member) {
